@@ -18,7 +18,6 @@ def save_user_data(data):
 
 def register_page():
     st.title("🍽️ Create an Account")
-    st.image("nutrition_register.jpg", use_container_width=True)
     name = st.text_input("Name")
     email = st.text_input("Email ID")
     phone = st.text_input("Phone Number")
@@ -28,7 +27,7 @@ def register_page():
     if st.button("Register"):
         user_data = load_user_data()
         if new_username in user_data:
-            st.error("Username already exists. Please choose another.")
+            st.error("❌ Username already exists. Please choose another.")
         else:
             user_data[new_username] = {
                 "name": name,
@@ -37,21 +36,20 @@ def register_page():
                 "password": new_password
             }
             save_user_data(user_data)
-            st.success("Account created successfully! Please login.")
+            st.success("✅ Account created successfully! Please login.")
 
 def login_page():
     st.title("🔒 AI Nutrition Chatbot - Login")
-    st.image("nutrition_login.jpg", use_container_width=True)
     username = st.text_input("Username")
     password = st.text_input("Password", type='password')
 
     if st.button("Login"):
         user_data = load_user_data()
         if username in user_data and user_data[username]["password"] == password:
-            st.success(f"Welcome back, {user_data[username]['name']}!")
+            st.success(f"🎉 Welcome back, {user_data[username]['name']}!")
             st.session_state['authenticated'] = True
         else:
-            st.error("Invalid credentials. Please try again.")
+            st.error("❌ Invalid credentials. Please try again.")
 
 def generate_meal_plan():
     meal_options = [
@@ -65,7 +63,6 @@ def generate_meal_plan():
 
 def main_app():
     st.title("🥗 AI-Driven Personalized Nutrition Chatbot")
-    st.image("nutrition_dashboard.jpg", use_container_width=True)
 
     # Collect user details
     age = st.number_input("Enter your age", min_value=1)
@@ -116,9 +113,9 @@ else:
     if st.session_state['authenticated']:
         main_app()
     else:
-        st.warning("Please login first.")
+        st.warning("⚠️ Please login first.")
 
-# Group Membersft
+# Group Members
 st.sidebar.markdown("### Developed by TechSpark Team:")
 st.sidebar.markdown("- Dipak Walunj")
 st.sidebar.markdown("- Divyank Wani")
