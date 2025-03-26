@@ -120,4 +120,10 @@ st.sidebar.markdown("### Developed by TechSpark Team:")
 st.sidebar.markdown("- Dipak Walunj")
 st.sidebar.markdown("- Divyank Wani")
 st.sidebar.markdown("- Omkar Zinjurde")
-st.sidebar.markdown("- Sakshi Ugade")
+st.sidebar.markdown("- Sakshi Ughade")
+
+# College Information in Footer
+st.markdown("---")
+st.markdown("### Amrutvahini College of Engineering")
+st.markdown("**Artificial Intelligence and Data Science Department**")
+st.markdown("**Developed by TechSpark Team**")
