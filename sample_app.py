@@ -55,6 +55,12 @@ def login_page():
 def main_app():
     st.title("AI-Driven Personalized Nutrition Chatbot")
 
+    # Logout button
+    if st.button("Logout"):
+        st.session_state['authenticated'] = False
+        st.success("You have been logged out.")
+        return
+
     # Collect user details
     age = st.number_input("Enter your age", min_value=1)
     height = st.number_input("Enter your height (cm)", min_value=50)
@@ -62,9 +68,15 @@ def main_app():
     gender = st.selectbox("Select Gender", ["Male", "Female", "Other"])
     body_type = st.selectbox("Select Body Type", ["Ectomorph", "Mesomorph", "Endomorph"])
     dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan"])
+    diet_goal = st.selectbox("Diet Goal", ["Weight Loss", "Weight Gain", "Balanced Nutrition"])
     allergies = st.text_input("List any allergies (comma separated)")
     activity_level = st.selectbox("Activity Level", ["Sedentary", "Light", "Moderate", "Active", "Very Active"])
     diet_duration = st.selectbox("Select Diet Duration", ["1 Week", "2 Weeks", "1 Month", "3 Months", "6 Months", "1 Year"])
+
+    # Optional details
+    sleep_hours = st.number_input("Sleep Hours per Day", min_value=0, max_value=24)
+    water_intake = st.number_input("Water Intake (liters/day)", min_value=0.0)
+    stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
     if st.button("Get Nutrition Plan"):
         st.success("Here’s your personalized nutrition plan:")
@@ -74,8 +86,12 @@ def main_app():
         st.write(f"✅ Gender: {gender}")
         st.write(f"✅ Body Type: {body_type}")
         st.write(f"✅ Dietary Preference: {dietary_preference}")
+        st.write(f"✅ Diet Goal: {diet_goal}")
         st.write(f"✅ Allergies: {allergies if allergies else 'None'}")
         st.write(f"📅 Diet Duration: {diet_duration}")
+        st.write(f"💤 Sleep Hours: {sleep_hours} hours")
+        st.write(f"💧 Water Intake: {water_intake} liters")
+        st.write(f"😌 Stress Level: {stress_level}")
 
         # Example weekly diet plan
         st.write("### Sample Diet Plan")
@@ -104,15 +120,10 @@ def main_app():
         st.write("Lunch: Chicken Biryani / Veg Pulao")
         st.write("Dinner: Spinach Soup + Toast / Chicken Stew")
 
-        st.write("**Day 6**")
-        st.write("Breakfast: Dosa + Chutney / Masala Omelette")
-        st.write("Lunch: Egg Curry + Rice / Veg Fried Rice")
-        st.write("Dinner: Veg Pulao + Raita / Tofu Stir Fry")
-
-        st.write("**Day 7**")
-        st.write("Breakfast: Methi Thepla / Fruit Salad Bowl")
-        st.write("Lunch: Soya Chunk Curry + Roti / Veg Thali")
-        st.write("Dinner: Vegetable Stir Fry + Brown Rice / Chicken Korma")
+    st.write("---")
+    st.write("**Project by TechSpark Group**")
+    st.write("Dipak Walunj, Divyank Wani, Omkar Zinjurde, Sakshi Ughade")
+    st.write("Amrutvahini College of Engineering, Sangamner")
 
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
