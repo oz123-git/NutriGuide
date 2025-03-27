@@ -82,8 +82,9 @@ def main_app():
 
     st.write("---")
     st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #3F51B5;'>Dipak Walunj, Divyank Wani, Omkar Zinjurde, Sakshi Ughade</p>", unsafe_allow_html=True)
+    st.markdown("- Dipak Walunj\n- Divyank Wani\n- Omkar Zinjurde\n- Sakshi Ughade", unsafe_allow_html=True)
     st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
 
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
