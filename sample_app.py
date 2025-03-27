@@ -11,19 +11,6 @@ def add_bg_from_local(image_file):
         background: url("{image_file}") no-repeat center center fixed;
         background-size: cover;
     }}
-    .stApp::before {{
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);  /* Dark overlay for better readability */
-        z-index: -1;
-    }}
-    .stMarkdown, .stTitle, .stButton, .stTextInput, .stSelectbox, .stNumberInput, .stSuccess, .stWarning {{
-        color: #ffffff !important;  /* Light text for contrast */
-    }}
     </style>
     """
     st.markdown(bg_style, unsafe_allow_html=True)
@@ -77,7 +64,7 @@ def login_page():
             st.error("Invalid credentials. Please try again.")
 
 def main_app():
-    add_bg_from_local("image/nutrition_register.jpg.webp")
+    add_bg_from_local("image/nutrition_main.jpg.webp")
     st.title("AI-Driven Personalized Nutrition Chatbot")
 
     # Collect user details
