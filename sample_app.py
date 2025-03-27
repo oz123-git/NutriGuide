@@ -1,7 +1,5 @@
 import streamlit as st
 import json
-import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
 
 # File to store user data
 db_file = "user_data.json"
@@ -18,7 +16,7 @@ def save_user_data(data):
         json.dump(data, file, indent=4)
 
 def register_page():
-    st.title("Create an Account")
+    st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_register.jpg.webp")
     name = st.text_input("Name")
     email = st.text_input("Email ID")
@@ -26,7 +24,7 @@ def register_page():
     new_username = st.text_input("Create Username")
     new_password = st.text_input("Create Password", type='password')
 
-    if st.button("Register"):
+    if st.button("Register", key='register_button'):
         user_data = load_user_data()
         if new_username in user_data:
             st.error("Username already exists. Please choose another.")
@@ -41,12 +39,12 @@ def register_page():
             st.success("Account created successfully! Please login.")
 
 def login_page():
-    st.title("AI Nutrition Chatbot - Login")
+    st.markdown("<h1 style='color: #2196F3;'>AI Nutrition Chatbot - Login</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_login.jpg.webp")
     username = st.text_input("Username")
     password = st.text_input("Password", type='password')
 
-    if st.button("Login"):
+    if st.button("Login", key='login_button'):
         user_data = load_user_data()
         if username in user_data and user_data[username]["password"] == password:
             st.success(f"Welcome back, {user_data[username]['name']}!")
@@ -55,25 +53,12 @@ def login_page():
             st.error("Invalid credentials. Please try again.")
 
 def main_app():
-    st.title("AI-Driven Personalized Nutrition Chatbot")
+    st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition Chatbot</h1>", unsafe_allow_html=True)
 
-    # Logout button
-    if st.button("Logout"):
+    if st.button("Logout", key='logout_button'):
         st.session_state['authenticated'] = False
         st.success("You have been logged out.")
         return
-
-    # AI Model Training (Sample Data)
-    X = np.array([
-        [18, 70, 3],
-        [25, 80, 2],
-        [30, 50, 4],
-        [40, 90, 1],
-        [22, 60, 5]
-    ])
-    y = np.array(['Balanced Nutrition', 'Weight Loss', 'Weight Gain', 'Weight Loss', 'Balanced Nutrition'])
-    model = KNeighborsClassifier(n_neighbors=3)
-    model.fit(X, y)
 
     # Collect user details
     age = st.number_input("Enter your age", min_value=1)
@@ -92,18 +77,13 @@ def main_app():
     water_intake = st.number_input("Water Intake (liters/day)", min_value=0.0)
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
-    if st.button("Get Nutrition Plan"):
-        activity_mapping = {"Sedentary": 1, "Light": 2, "Moderate": 3, "Active": 4, "Very Active": 5}
-        activity_value = activity_mapping[activity_level]
-        user_input = np.array([[age, weight, activity_value]])
-        predicted_diet = model.predict(user_input)[0]
-
-        st.success(f"Recommended Diet Type: {predicted_diet}")
+    if st.button("Get Nutrition Plan", key='plan_button'):
+        st.success(f"Recommended Diet Type: {diet_goal}")
 
     st.write("---")
-    st.write("**Project by TechSpark Group**")
-    st.write("Dipak Walunj, Divyank Wani, Omkar Zinjurde, Sakshi Ughade")
-    st.write("Amrutvahini College of Engineering, Sangamner")
+    st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #3F51B5;'>Dipak Walunj, Divyank Wani, Omkar Zinjurde, Sakshi Ughade</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
 
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
