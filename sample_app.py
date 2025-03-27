@@ -10,7 +10,19 @@ def add_bg_from_local(image_file):
     .stApp {{
         background: url("{image_file}") no-repeat center center fixed;
         background-size: cover;
-        opacity: 0.3;  /* Adjust for faint effect */
+    }}
+    .stApp::before {{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);  /* Dark overlay for better readability */
+        z-index: -1;
+    }}
+    .stMarkdown, .stTitle, .stButton, .stTextInput, .stSelectbox, .stNumberInput, .stSuccess, .stWarning {{
+        color: #ffffff !important;  /* Light text for contrast */
     }}
     </style>
     """
