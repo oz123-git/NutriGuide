@@ -54,7 +54,6 @@ def login_page():
 
 def main_app():
     st.title("AI-Driven Personalized Nutrition Chatbot")
-    st.image("images/nutrition_dashboard.jpg.webp")
 
     # Collect user details
     age = st.number_input("Enter your age", min_value=1)
