@@ -17,7 +17,7 @@ def save_user_data(data):
 
 def register_page():
     st.title("Create an Account")
-    st.image("images/nutrition_register.jpg.webp")
+    st.image("image/nutrition_register.jpg.webp")
     name = st.text_input("Name")
     email = st.text_input("Email ID")
     phone = st.text_input("Phone Number")
@@ -40,7 +40,7 @@ def register_page():
 
 def login_page():
     st.title("AI Nutrition Chatbot - Login")
-    st.image("images/nutrition_login.jpg.webp")
+    st.image("image/nutrition_login.jpg.webp")
     username = st.text_input("Username")
     password = st.text_input("Password", type='password')
 
