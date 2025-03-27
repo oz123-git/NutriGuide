@@ -4,6 +4,18 @@ import json
 # File to store user data
 db_file = "user_data.json"
 
+def add_bg_from_local(image_file):
+    bg_style = f"""
+    <style>
+    .stApp {{
+        background: url("{image_file}") no-repeat center center fixed;
+        background-size: cover;
+        opacity: 0.3;  /* Adjust for faint effect */
+    }}
+    </style>
+    """
+    st.markdown(bg_style, unsafe_allow_html=True)
+
 def load_user_data():
     try:
         with open(db_file, "r") as file:
@@ -16,8 +28,8 @@ def save_user_data(data):
         json.dump(data, file, indent=4)
 
 def register_page():
+    add_bg_from_local("image/nutrition_register.jpg.webp")
     st.title("Create an Account")
-    st.image("image/nutrition_register.jpg.webp")
     name = st.text_input("Name")
     email = st.text_input("Email ID")
     phone = st.text_input("Phone Number")
@@ -39,8 +51,8 @@ def register_page():
             st.success("Account created successfully! Please login.")
 
 def login_page():
+    add_bg_from_local("image/nutrition_login.jpg.webp")
     st.title("AI Nutrition Chatbot - Login")
-    st.image("image/nutrition_login.jpg.webp")
     username = st.text_input("Username")
     password = st.text_input("Password", type='password')
 
@@ -53,6 +65,7 @@ def login_page():
             st.error("Invalid credentials. Please try again.")
 
 def main_app():
+    add_bg_from_local("image/nutrition_register.jpg.webp")
     st.title("AI-Driven Personalized Nutrition Chatbot")
 
     # Collect user details
@@ -98,21 +111,6 @@ def main_app():
         st.write("Breakfast: Paratha + Curd / Banana Pancakes")
         st.write("Lunch: Fish Curry + Rice / Chana Masala with Roti")
         st.write("Dinner: Dal Khichdi / Palak Paneer with Rice")
-
-        st.write("**Day 5**")
-        st.write("Breakfast: Upma + Coconut Chutney / Veg Sandwich")
-        st.write("Lunch: Chicken Biryani / Veg Pulao")
-        st.write("Dinner: Spinach Soup + Toast / Chicken Stew")
-
-        st.write("**Day 6**")
-        st.write("Breakfast: Dosa + Chutney / Masala Omelette")
-        st.write("Lunch: Egg Curry + Rice / Veg Fried Rice")
-        st.write("Dinner: Veg Pulao + Raita / Tofu Stir Fry")
-
-        st.write("**Day 7**")
-        st.write("Breakfast: Methi Thepla / Fruit Salad Bowl")
-        st.write("Lunch: Soya Chunk Curry + Roti / Veg Thali")
-        st.write("Dinner: Vegetable Stir Fry + Brown Rice / Chicken Korma")
 
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
