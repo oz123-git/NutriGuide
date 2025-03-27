@@ -1,5 +1,7 @@
 import streamlit as st
 import json
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
 
 # File to store user data
 db_file = "user_data.json"
@@ -61,6 +63,18 @@ def main_app():
         st.success("You have been logged out.")
         return
 
+    # AI Model Training (Sample Data)
+    X = np.array([
+        [18, 70, 3],
+        [25, 80, 2],
+        [30, 50, 4],
+        [40, 90, 1],
+        [22, 60, 5]
+    ])
+    y = np.array(['Balanced Nutrition', 'Weight Loss', 'Weight Gain', 'Weight Loss', 'Balanced Nutrition'])
+    model = KNeighborsClassifier(n_neighbors=3)
+    model.fit(X, y)
+
     # Collect user details
     age = st.number_input("Enter your age", min_value=1)
     height = st.number_input("Enter your height (cm)", min_value=50)
@@ -79,46 +93,12 @@ def main_app():
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
     if st.button("Get Nutrition Plan"):
-        st.success("Here’s your personalized nutrition plan:")
-        st.write(f"✅ Age: {age} years")
-        st.write(f"✅ Height: {height} cm")
-        st.write(f"✅ Weight: {weight} kg")
-        st.write(f"✅ Gender: {gender}")
-        st.write(f"✅ Body Type: {body_type}")
-        st.write(f"✅ Dietary Preference: {dietary_preference}")
-        st.write(f"✅ Diet Goal: {diet_goal}")
-        st.write(f"✅ Allergies: {allergies if allergies else 'None'}")
-        st.write(f"📅 Diet Duration: {diet_duration}")
-        st.write(f"💤 Sleep Hours: {sleep_hours} hours")
-        st.write(f"💧 Water Intake: {water_intake} liters")
-        st.write(f"😌 Stress Level: {stress_level}")
+        activity_mapping = {"Sedentary": 1, "Light": 2, "Moderate": 3, "Active": 4, "Very Active": 5}
+        activity_value = activity_mapping[activity_level]
+        user_input = np.array([[age, weight, activity_value]])
+        predicted_diet = model.predict(user_input)[0]
 
-        # Example weekly diet plan
-        st.write("### Sample Diet Plan")
-        st.write("**Day 1**")
-        st.write("Breakfast: Oats + Fruits / Boiled Eggs + Avocado Toast")
-        st.write("Lunch: Grilled Chicken + Salad / Paneer Bhurji + Roti")
-        st.write("Dinner: Veg Curry + Brown Rice / Dal Tadka + Jeera Rice")
-
-        st.write("**Day 2**")
-        st.write("Breakfast: Poha + Sprouts / Smoothie Bowl")
-        st.write("Lunch: Paneer + Roti / Chicken Wrap")
-        st.write("Dinner: Quinoa + Veg Curry / Pasta with Veggies")
-
-        st.write("**Day 3**")
-        st.write("Breakfast: Idli + Sambar / Veg Upma")
-        st.write("Lunch: Rajma + Rice / Chicken Tikka Salad")
-        st.write("Dinner: Mixed Veg Curry + Roti / Grilled Fish with Rice")
-
-        st.write("**Day 4**")
-        st.write("Breakfast: Paratha + Curd / Banana Pancakes")
-        st.write("Lunch: Fish Curry + Rice / Chana Masala with Roti")
-        st.write("Dinner: Dal Khichdi / Palak Paneer with Rice")
-
-        st.write("**Day 5**")
-        st.write("Breakfast: Upma + Coconut Chutney / Veg Sandwich")
-        st.write("Lunch: Chicken Biryani / Veg Pulao")
-        st.write("Dinner: Spinach Soup + Toast / Chicken Stew")
+        st.success(f"Recommended Diet Type: {predicted_diet}")
 
     st.write("---")
     st.write("**Project by TechSpark Group**")
