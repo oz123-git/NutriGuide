@@ -65,7 +65,6 @@ def main_app():
     height = st.number_input("Enter your height (cm)", min_value=50)
     weight = st.number_input("Enter your weight (kg)", min_value=10)
     gender = st.selectbox("Select Gender", ["Male", "Female", "Other"])
-    body_type = st.selectbox("Select Body Type", ["Ectomorph", "Mesomorph", "Endomorph"])
     dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan"])
     diet_goal = st.selectbox("Diet Goal", ["Weight Loss", "Weight Gain", "Balanced Nutrition"])
     allergies = st.text_input("List any allergies (comma separated)")
