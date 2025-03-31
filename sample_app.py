@@ -18,13 +18,30 @@ def save_user_data(data):
 
 def generate_diet_plan(diet_goal, duration):
     plan = {
-        "Weight Loss": ["Oats and fruits", "Salad and grilled chicken", "Vegetable soup", "Nuts and green tea"],
-        "Weight Gain": ["Milk and banana", "Rice with protein", "Peanut butter toast", "Protein shakes"],
-        "Balanced Nutrition": ["Eggs and toast", "Fish with veggies", "Lentils and brown rice", "Yogurt and almonds"]
+        "Weight Loss": {
+            "Breakfast": "Oats with fruits and green tea",
+            "Lunch": "Grilled chicken with quinoa and salad",
+            "Dinner": "Vegetable soup with whole-grain bread",
+            "Water": "8 glasses per day"
+        },
+        "Weight Gain": {
+            "Breakfast": "Milk with banana and peanut butter toast",
+            "Lunch": "Rice with chicken curry and vegetables",
+            "Dinner": "Lentils with whole-grain bread and salad",
+            "Water": "10 glasses per day"
+        },
+        "Balanced Nutrition": {
+            "Breakfast": "Eggs with whole wheat toast and orange juice",
+            "Lunch": "Fish with steamed vegetables and brown rice",
+            "Dinner": "Lentils with mixed vegetables and yogurt",
+            "Water": "8-10 glasses per day"
+        }
     }
-    
     days = {"1 Week": 7, "2 Weeks": 14, "1 Month": 30}
-    return [f"Day {i+1}: {meal}" for i, meal in enumerate(plan[diet_goal] * (days[duration] // 4))]
+    full_plan = []
+    for i in range(days[duration]):
+        full_plan.append(f"Day {i+1}: \nBreakfast: {plan[diet_goal]['Breakfast']}\nLunch: {plan[diet_goal]['Lunch']}\nDinner: {plan[diet_goal]['Dinner']}\nWater Intake: {plan[diet_goal]['Water']}")
+    return full_plan
 
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
@@ -58,6 +75,7 @@ def login_page():
             st.session_state['username'] = username
         else:
             st.error("Invalid credentials. Please try again.")
+    st.markdown("<p style='text-align: right;'><a href='#' style='color: #2196F3;'>Create Account</a></p>", unsafe_allow_html=True)
 
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition Chatbot</h1>", unsafe_allow_html=True)
@@ -99,18 +117,8 @@ def main_app():
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
 
-page = st.sidebar.selectbox("Select Page", ["Register", "Login", "Main App"])
-
-if page == "Register":
-    register_page()
-elif page == "Login":
-    if st.session_state['authenticated']:
-        main_app()
-    else:
-        login_page()
+if not st.session_state['authenticated']:
+    login_page()
 else:
-    if st.session_state['authenticated']:
-        main_app()
-    else:
-        st.warning("Please login first.")
+    main_app()
 
