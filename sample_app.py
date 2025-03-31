@@ -67,9 +67,11 @@ def main_app():
         st.success("You have been logged out.")
         return
     
-    username = st.session_state['username']
+    username = st.session_state.get('username', None)
     user_data = load_user_data()
-    st.info(f"Last Activity: {user_data[username]['last_activity']}")
+    
+    if username and username in user_data:
+        st.info(f"Last Activity: {user_data[username].get('last_activity', 'No previous activity')}")
     
     age = st.number_input("Enter your age", min_value=1)
     height = st.number_input("Enter your height (cm)", min_value=50)
@@ -84,8 +86,9 @@ def main_app():
         for day in plan:
             st.write(day)
         
-        user_data[username]['last_activity'] = f"Generated a {diet_duration} {diet_goal} diet plan on {datetime.date.today()}"
-        save_user_data(user_data)
+        if username and username in user_data:
+            user_data[username]['last_activity'] = f"Generated a {diet_duration} {diet_goal} diet plan on {datetime.date.today()}"
+            save_user_data(user_data)
     
     st.write("---")
     st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
