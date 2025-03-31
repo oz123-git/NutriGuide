@@ -1,7 +1,6 @@
 import streamlit as st
 import json
 import datetime
-import random
 from fpdf import FPDF
 
 # File to store user data and diet plans
@@ -33,119 +32,88 @@ def save_diet_plan(data):
 def generate_diet_plan(diet_goal, duration):
     plan = {
         "Weight Loss": {
-            "Breakfast": [
-                "Smoothie with spinach, banana, and almond milk",
-                "Chia pudding with mixed berries",
-                "Avocado toast with poached eggs",
-                "Oats with almond milk and chia seeds",
-                "Greek yogurt with honey and nuts"
-            ],
-            "Lunch": [
-                "Grilled salmon with quinoa and mixed greens",
-                "Chicken breast with sweet potato and spinach",
-                "Zucchini noodles with marinara sauce and a side salad",
-                "Turkey lettuce wraps with avocado and tomatoes",
-                "Vegetable stir-fry with tofu"
-            ],
-            "Dinner": [
-                "Grilled shrimp with quinoa and steamed broccoli",
-                "Lentil soup with a side of whole-grain bread",
-                "Baked cod with steamed vegetables and couscous",
-                "Chicken curry with basmati rice",
-                "Vegetable stir-fry with tofu"
-            ],
-            "Snack": [
-                "Apple and almonds",
-                "Carrot sticks with hummus",
-                "Greek yogurt with berries",
-                "Almonds and an orange",
-                "Cottage cheese with pineapple"
-            ],
-            "Water": "8 glasses per day"
+            "Day 1": {
+                "Breakfast": "Poha with vegetables",
+                "Lunch": "Grilled chicken with roti and salad",
+                "Dinner": "Dal Tadka with brown rice",
+                "Snack": "Cucumber and carrot sticks",
+                "Water": "8 glasses per day"
+            },
+            "Day 2": {
+                "Breakfast": "Vegetable upma",
+                "Lunch": "Palak paneer with chapati",
+                "Dinner": "Vegetable soup and a small bowl of brown rice",
+                "Snack": "Apple and almonds",
+                "Water": "8 glasses per day"
+            },
+            "Day 3": {
+                "Breakfast": "Oats porridge with nuts",
+                "Lunch": "Tandoori chicken with green salad",
+                "Dinner": "Moong dal khichdi with a side of curd",
+                "Snack": "Greek yogurt with honey",
+                "Water": "8 glasses per day"
+            }
         },
         "Weight Gain": {
-            "Breakfast": [
-                "Oats with peanut butter and banana",
-                "Scrambled eggs with avocado and whole wheat toast",
-                "Greek yogurt with granola and honey",
-                "Whole wheat pancakes with syrup and fruits",
-                "Smoothie with protein powder, almond butter, and banana"
-            ],
-            "Lunch": [
-                "Grilled steak with mashed potatoes and green beans",
-                "Chicken breast with quinoa and roasted veggies",
-                "Salmon with roasted vegetables and quinoa",
-                "Pasta with chicken and Alfredo sauce",
-                "Beef stew with carrots and potatoes"
-            ],
-            "Dinner": [
-                "Chicken curry with basmati rice",
-                "Grilled fish with steamed vegetables",
-                "Lentil stew with brown rice",
-                "Beef stew with vegetables",
-                "Pasta with meatballs"
-            ],
-            "Snack": [
-                "Protein shake with milk",
-                "Granola bar and an apple",
-                "Peanut butter with crackers",
-                "Cheese and whole wheat crackers",
-                "Greek yogurt with honey"
-            ],
-            "Water": "10 glasses per day"
+            "Day 1": {
+                "Breakfast": "Aloo paratha with curd",
+                "Lunch": "Paneer butter masala with naan",
+                "Dinner": "Chicken curry with white rice",
+                "Snack": "Peanut butter with whole wheat bread",
+                "Water": "10 glasses per day"
+            },
+            "Day 2": {
+                "Breakfast": "Masala dosa with sambar and coconut chutney",
+                "Lunch": "Mutton curry with steamed rice",
+                "Dinner": "Pasta with paneer and vegetable stir fry",
+                "Snack": "Banana and milkshake",
+                "Water": "10 glasses per day"
+            },
+            "Day 3": {
+                "Breakfast": "Pancakes with ghee and honey",
+                "Lunch": "Chole bhature",
+                "Dinner": "Biryani with raita",
+                "Snack": "Protein shake with milk",
+                "Water": "10 glasses per day"
+            }
         },
         "Balanced Nutrition": {
-            "Breakfast": [
-                "Omelette with spinach, mushrooms, and cheese",
-                "Greek yogurt with berries and chia seeds",
-                "Avocado toast with poached eggs",
-                "Whole wheat toast with peanut butter and banana",
-                "Smoothie with kale, apple, and almond milk"
-            ],
-            "Lunch": [
-                "Grilled chicken salad with olive oil dressing",
-                "Turkey and avocado wrap with whole wheat tortilla",
-                "Lentil soup with a side of whole-grain bread",
-                "Quinoa salad with chickpeas, cucumbers, and tomatoes",
-                "Tuna salad with mixed greens"
-            ],
-            "Dinner": [
-                "Grilled fish with brown rice and steamed broccoli",
-                "Grilled shrimp with quinoa and steamed broccoli",
-                "Lentil soup with a side of whole-grain bread",
-                "Baked chicken with sweet potato and asparagus",
-                "Vegetable stir-fry with tofu"
-            ],
-            "Snack": [
-                "Carrot and celery sticks with hummus",
-                "Almonds and an apple",
-                "Cottage cheese with pineapple",
-                "Granola bar",
-                "Rice cakes with almond butter"
-            ],
-            "Water": "8-10 glasses per day"
+            "Day 1": {
+                "Breakfast": "Oats idli with chutney",
+                "Lunch": "Grilled fish with brown rice and vegetables",
+                "Dinner": "Vegetable curry with roti",
+                "Snack": "Paneer tikka",
+                "Water": "8-10 glasses per day"
+            },
+            "Day 2": {
+                "Breakfast": "Moong dal cheela with green chutney",
+                "Lunch": "Rajma chawal with a side of salad",
+                "Dinner": "Tofu stir fry with quinoa",
+                "Snack": "Mixed nuts",
+                "Water": "8-10 glasses per day"
+            },
+            "Day 3": {
+                "Breakfast": "Dosa with sambar and coconut chutney",
+                "Lunch": "Lentil soup with chapati",
+                "Dinner": "Grilled chicken with steamed vegetables",
+                "Snack": "Fruit salad with yogurt",
+                "Water": "8-10 glasses per day"
+            }
         }
     }
 
     days = {"1 Week": 7, "2 Weeks": 14, "1 Month": 30}
-    total_days = days[duration]
-    
     full_plan = []
-    for meal_type in ["Breakfast", "Lunch", "Dinner", "Snack"]:
-        meals = plan[diet_goal][meal_type]
-        meal_plan = random.sample(meals, len(meals))  # Shuffle meals to add variety
-        while len(meal_plan) < total_days:
-            meal_plan.extend(random.sample(meals, len(meals)))
-        plan[diet_goal][meal_type] = meal_plan[:total_days]
-    
-    # Generate the full plan for the month
-    for i in range(total_days):
-        daily_plan = f"Day {i+1}:\n"
-        for meal_type in ["Breakfast", "Lunch", "Dinner", "Snack"]:
-            daily_plan += f"{meal_type}: {plan[diet_goal][meal_type][i]}\n"
-        daily_plan += f"Water Intake: {plan[diet_goal]['Water']}\n\n"
+    for i in range(days[duration]):
+        day_name = f"Day {i+1}"
+        day_plan = plan[diet_goal].get(day_name, {})
+        daily_plan = f"**{day_name}**\n"
+        daily_plan += f"**Breakfast:** {day_plan.get('Breakfast', 'N/A')}\n"
+        daily_plan += f"**Lunch:** {day_plan.get('Lunch', 'N/A')}\n"
+        daily_plan += f"**Dinner:** {day_plan.get('Dinner', 'N/A')}\n"
+        daily_plan += f"**Snack:** {day_plan.get('Snack', 'N/A')}\n"
+        daily_plan += f"**Water Intake:** {day_plan.get('Water', 'N/A')}\n\n"
         full_plan.append(daily_plan)
-    
     return full_plan
 
 def create_pdf(diet_plan, filename="diet_plan.pdf"):
@@ -222,7 +190,7 @@ def main_app():
         plan = generate_diet_plan(diet_goal, diet_duration)
         st.success(f"Your personalized diet plan for {diet_duration}:")
         for day in plan:
-            st.write(day)
+            st.markdown(day)
         
         # Save the diet plan for future use
         if username and username in user_data:
@@ -235,17 +203,3 @@ def main_app():
     
     st.write("---")
     st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
-    st.markdown("- Dipak Walunj\n- Divyank Wani\n- Omkar Zinjurde", unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    if 'authenticated' not in st.session_state:
-        st.session_state['authenticated'] = False
-    
-    if st.session_state['authenticated']:
-        main_app()
-    else:
-        page = st.sidebar.radio("Choose an option", ["Login", "Register"])
-        if page == "Login":
-            login_page()
-        else:
-            register_page()
