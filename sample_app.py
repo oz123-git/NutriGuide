@@ -20,6 +20,59 @@ def save_user_data(data):
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_register.jpg.webp")
+
+    # Initialize session state variables
+    if "name" not in st.session_state:
+        st.session_state.name = ""
+    if "email" not in st.session_state:
+        st.session_state.email = ""
+    if "phone" not in st.session_state:
+        st.session_state.phone = ""
+    if "new_username" not in st.session_state:
+        st.session_state.new_username = ""
+    if "new_password" not in st.session_state:
+        st.session_state.new_password = ""
+
+    # Input fields using session state
+    st.session_state.name = st.text_input("Name", value=st.session_state.name)
+    st.session_state.email = st.text_input("Email ID", value=st.session_state.email)
+    st.session_state.phone = st.text_input("Phone Number", value=st.session_state.phone)
+    st.session_state.new_username = st.text_input("Create Username", value=st.session_state.new_username)
+    st.session_state.new_password = st.text_input("Create Password", type='password', value=st.session_state.new_password)
+
+    if st.button("Register", key='register_button'):
+        if not all([st.session_state.name, st.session_state.email, st.session_state.phone, st.session_state.new_username, st.session_state.new_password]):
+            st.error("All fields are required!")
+            return
+        
+        user_data = load_user_data()
+
+        if st.session_state.new_username in user_data:
+            st.error("Username already exists. Please choose another.")
+        else:
+            user_data[st.session_state.new_username] = {
+                "name": st.session_state.name,
+                "email": st.session_state.email,
+                "phone": st.session_state.phone,
+                "password": st.session_state.new_password
+            }
+            save_user_data(user_data)
+            st.success("Account created successfully! Please login.")
+
+            # Reset fields after successful registration
+            st.session_state.name = ""
+            st.session_state.email = ""
+            st.session_state.phone = ""
+            st.session_state.new_username = ""
+            st.session_state.new_password = ""
+
+if __name__ == "__main__":
+    register_page()
+
+
+def register_page():
+    st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
+    st.image("image/nutrition_register.jpg.webp")
     
     name = st.text_input("Name")
     email = st.text_input("Email ID")
