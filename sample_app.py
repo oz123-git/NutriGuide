@@ -21,43 +21,39 @@ def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_register.jpg.webp")
 
-    # Use session state to persist values
-    for key in ["name", "email", "phone", "new_username", "new_password"]:
-        if key not in st.session_state:
-            st.session_state[key] = ""
-
-    st.session_state.name = st.text_input("Name", value=st.session_state.name)
-    st.session_state.email = st.text_input("Email ID", value=st.session_state.email)
-    st.session_state.phone = st.text_input("Phone Number", value=st.session_state.phone)
-    st.session_state.new_username = st.text_input("Create Username", value=st.session_state.new_username)
-    st.session_state.new_password = st.text_input("Create Password", type='password', value=st.session_state.new_password)
+    name = st.text_input("Name")
+    email = st.text_input("Email ID")
+    phone = st.text_input("Phone Number")
+    new_username = st.text_input("Create Username")
+    new_password = st.text_input("Create Password", type='password')
 
     if st.button("Register"):
-        if not all([st.session_state.name, st.session_state.email, st.session_state.phone, st.session_state.new_username, st.session_state.new_password]):
+        if not all([name, email, phone, new_username, new_password]):
             st.error("All fields are required!")
             return
         
         user_data = load_user_data()
 
-        if st.session_state.new_username in user_data:
+        if new_username in user_data:
             st.error("Username already exists. Please choose another.")
         else:
-            user_data[st.session_state.new_username] = {
-                "name": st.session_state.name,
-                "email": st.session_state.email,
-                "phone": st.session_state.phone,
-                "password": st.session_state.new_password
+            user_data[new_username] = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+                "password": new_password
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
+            st.session_state['page'] = "login"
 
-            # Reset fields after successful registration
-            for key in ["name", "email", "phone", "new_username", "new_password"]:
-                st.session_state[key] = ""
+    if st.button("Back to Login"):
+        st.session_state['page'] = "login"
 
 def login_page():
     st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_login.jpg.webp")
+
     username = st.text_input("Username")
     password = st.text_input("Password", type='password')
 
@@ -66,8 +62,12 @@ def login_page():
         if username in user_data and user_data[username]["password"] == password:
             st.success(f"Welcome back, {user_data[username]['name']}!")
             st.session_state['authenticated'] = True
+            st.session_state['page'] = "main"
         else:
             st.error("Invalid credentials. Please try again.")
+
+    if st.button("Create Account"):
+        st.session_state['page'] = "register"
 
 def generate_seven_day_diet(diet_goal):
     diet_plans = {
@@ -112,7 +112,7 @@ def main_app():
 
     if st.button("Logout"):
         st.session_state['authenticated'] = False
-        st.success("You have been logged out.")
+        st.session_state['page'] = "login"
         return
 
     age = st.number_input("Enter your age", min_value=1)
@@ -130,7 +130,12 @@ def main_app():
     st.markdown("Amrutvahini College of Engineering, Sangamner")
 
 if __name__ == "__main__":
-    if "authenticated" not in st.session_state:
+    if "page" not in st.session_state:
+        st.session_state['page'] = "login"
+
+    if st.session_state['page'] == "login":
         login_page()
+    elif st.session_state['page'] == "register":
+        register_page()
     else:
         main_app()
