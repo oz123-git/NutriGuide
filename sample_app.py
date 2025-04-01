@@ -7,8 +7,12 @@ db_file = "user_data.json"
 # Load existing user data
 def load_user_data():
     if os.path.exists(db_file):
-        with open(db_file, 'r') as f:
-            return json.load(f)
+        try:
+            with open(db_file, 'r') as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            st.error("Error reading the user data. It may be corrupted.")
+            return {}
     return {}
 
 # Save user data
@@ -19,6 +23,9 @@ def save_user_data(data):
 # Update user data
 def update_user_data(username, age, height, weight, gender, dietary_preference, health_goals):
     user_data = load_user_data()
+    if username not in user_data:
+        user_data[username] = {}
+    
     user_data[username] = {
         "age": age,
         "height": height,
@@ -87,7 +94,7 @@ def register_page():
             save_user_data(user_data)
             st.success("Registration successful! You can now login.")
 
-# Login page logic
+# Login page logic with registration option
 def login_page():
     st.title("Login")
     
@@ -97,7 +104,7 @@ def login_page():
     if st.button("Login"):
         user_data = load_user_data()
         
-        if username in user_data and user_data[username]["password"] == password:
+        if username in user_data and "password" in user_data[username] and user_data[username]["password"] == password:
             st.session_state['authenticated'] = True
             st.session_state['username'] = username
             st.success("Login successful!")
@@ -105,6 +112,11 @@ def login_page():
         else:
             st.error("Invalid username or password.")
             return False
+    
+    # Add option to go to registration page
+    if st.button("Don't have an account? Register here"):
+        register_page()
+        return False
 
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
