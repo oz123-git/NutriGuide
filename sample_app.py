@@ -58,8 +58,8 @@ def login_page():
         unsafe_allow_html=True
     )
 
-def generate_two_week_diet():
-    # Separate meals into breakfast, lunch, and dinner for two weeks (14 days)
+def generate_seven_day_diet():
+    # Separate meals into breakfast, lunch, and dinner for seven days
     daily_menus = {
         "Day 1": {
             "Breakfast": "Poha with vegetables and green tea",
@@ -95,51 +95,18 @@ def generate_two_week_diet():
             "Breakfast": "Dhokla with chutney",
             "Lunch": "Vegetable pulao with raita",
             "Dinner": "Grilled chicken with vegetables"
-        },
-        "Day 8": {
-            "Breakfast": "Upma with coconut chutney",
-            "Lunch": "Pav bhaji",
-            "Dinner": "Tofu stir-fry with quinoa"
-        },
-        "Day 9": {
-            "Breakfast": "Puri with aloo bhaji",
-            "Lunch": "Chole with rice",
-            "Dinner": "Vegetable sandwich"
-        },
-        "Day 10": {
-            "Breakfast": "Poached eggs with toast",
-            "Lunch": "Methi thepla with yogurt",
-            "Dinner": "Steamed fish with rice"
-        },
-        "Day 11": {
-            "Breakfast": "Aloo tikki with chutney",
-            "Lunch": "Kadhi with rice",
-            "Dinner": "Mushroom soup with bread"
-        },
-        "Day 12": {
-            "Breakfast": "Paratha with pickles",
-            "Lunch": "Vegetable biryani with raita",
-            "Dinner": "Rajma with chapati"
-        },
-        "Day 13": {
-            "Breakfast": "Pav bhaji with butter",
-            "Lunch": "Palak paneer with roti",
-            "Dinner": "Soya chunks curry with rice"
-        },
-        "Day 14": {
-            "Breakfast": "Idli with sambar and chutney",
-            "Lunch": "Dal fry with jeera rice",
-            "Dinner": "Chana masala with bhature"
         }
     }
 
-    st.markdown("### 14-Day Indian Diet Plan (Breakfast, Lunch, and Dinner):")
+    st.markdown("### 7-Day Indian Diet Plan (Breakfast, Lunch, and Dinner):")
     for day, meals in daily_menus.items():
         st.markdown(f"**{day}:**")
         st.markdown(f"  - **Breakfast:** {meals['Breakfast']}")
         st.markdown(f"  - **Lunch:** {meals['Lunch']}")
         st.markdown(f"  - **Dinner:** {meals['Dinner']}")
         st.markdown("---")
+    
+    st.markdown("### This meal plan repeats every week.")
 
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
@@ -165,10 +132,10 @@ def main_app():
     water_intake = st.number_input("Water Intake (liters/day)", min_value=0.0)
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
-    # Show diet plan for 2 weeks
-    if diet_duration == "2 Weeks":
-        if st.button("Get 14-Day Nutrition Plan"):
-            generate_two_week_diet()
+    # Show diet plan for 7 days
+    if diet_duration == "1 Week":
+        if st.button("Get 7-Day Nutrition Plan"):
+            generate_seven_day_diet()
 
     if st.button("Get Nutrition Plan", key='plan_button'):
         st.success(f"Recommended Diet Type: {diet_goal}")
