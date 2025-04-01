@@ -58,48 +58,52 @@ def login_page():
         unsafe_allow_html=True
     )
 
-def generate_seven_day_diet():
-    # Separate meals into breakfast, lunch, and dinner for seven days
+def generate_seven_day_diet(diet_goal):
+    # Separate meals into breakfast, lunch, and dinner for seven days based on diet goal
     daily_menus = {
-        "Day 1": {
-            "Breakfast": "Poha with vegetables and green tea",
-            "Lunch": "Dal khichdi with curd",
-            "Dinner": "Vegetable soup"
+        "Weight Loss": {
+            "Day 1": {
+                "Breakfast": "Poha with vegetables and green tea",
+                "Lunch": "Dal khichdi with curd",
+                "Dinner": "Vegetable soup"
+            },
+            "Day 2": {
+                "Breakfast": "Oats porridge with nuts",
+                "Lunch": "Paneer butter masala with naan",
+                "Dinner": "Sprouts salad"
+            },
+            "Day 3": {
+                "Breakfast": "Masala dosa with chutney",
+                "Lunch": "Rajma chawal with salad",
+                "Dinner": "Grilled fish with vegetables"
+            },
+            "Day 4": {
+                "Breakfast": "Oats idli with chutney",
+                "Lunch": "Chole bhature",
+                "Dinner": "Fruit salad with yogurt"
+            },
+            "Day 5": {
+                "Breakfast": "Pesarattu with chutney",
+                "Lunch": "Paneer tikka with salad",
+                "Dinner": "Vegetable biryani with raita"
+            },
+            "Day 6": {
+                "Breakfast": "Moong dal chilla with mint chutney",
+                "Lunch": "Aloo paratha with curd",
+                "Dinner": "Lentil soup with bread"
+            },
+            "Day 7": {
+                "Breakfast": "Dhokla with chutney",
+                "Lunch": "Vegetable pulao with raita",
+                "Dinner": "Grilled chicken with vegetables"
+            }
         },
-        "Day 2": {
-            "Breakfast": "Oats porridge with nuts",
-            "Lunch": "Paneer butter masala with naan",
-            "Dinner": "Sprouts salad"
-        },
-        "Day 3": {
-            "Breakfast": "Masala dosa with chutney",
-            "Lunch": "Rajma chawal with salad",
-            "Dinner": "Grilled fish with vegetables"
-        },
-        "Day 4": {
-            "Breakfast": "Oats idli with chutney",
-            "Lunch": "Chole bhature",
-            "Dinner": "Fruit salad with yogurt"
-        },
-        "Day 5": {
-            "Breakfast": "Pesarattu with chutney",
-            "Lunch": "Paneer tikka with salad",
-            "Dinner": "Vegetable biryani with raita"
-        },
-        "Day 6": {
-            "Breakfast": "Moong dal chilla with mint chutney",
-            "Lunch": "Aloo paratha with curd",
-            "Dinner": "Lentil soup with bread"
-        },
-        "Day 7": {
-            "Breakfast": "Dhokla with chutney",
-            "Lunch": "Vegetable pulao with raita",
-            "Dinner": "Grilled chicken with vegetables"
-        }
+        # Other goals can be added similarly
     }
 
-    st.markdown("### 7-Day Indian Diet Plan (Breakfast, Lunch, and Dinner):")
-    for day, meals in daily_menus.items():
+    # Show the diet plan based on the goal
+    st.markdown(f"### 7-Day {diet_goal} Meal Plan (Breakfast, Lunch, and Dinner):")
+    for day, meals in daily_menus[diet_goal].items():
         st.markdown(f"**{day}:**")
         st.markdown(f"  - **Breakfast:** {meals['Breakfast']}")
         st.markdown(f"  - **Lunch:** {meals['Lunch']}")
@@ -135,17 +139,7 @@ def main_app():
     # Show diet plan for 7 days
     if diet_duration == "1 Week":
         if st.button("Get 7-Day Nutrition Plan"):
-            generate_seven_day_diet()
-
-    if st.button("Get Nutrition Plan", key='plan_button'):
-        st.success(f"Recommended Diet Type: {diet_goal}")
-        st.markdown("### Suggested Indian Diet Options:")
-        if diet_goal == "Weight Loss":
-            st.markdown("- Poha with vegetables and green tea\n- Oats porridge with nuts\n- Dal khichdi with curd\n- Vegetable soup\n- Sprouts salad")
-        elif diet_goal == "Weight Gain":
-            st.markdown("- Aloo paratha with curd\n- Paneer butter masala with naan\n- Chicken curry with rice\n- Banana milkshake\n- Peanut butter toast")
-        elif diet_goal == "Balanced Nutrition":
-            st.markdown("- Oats idli with chutney\n- Rajma chawal with salad\n- Grilled fish with vegetables\n- Tofu stir-fry with quinoa\n- Fruit salad with yogurt")
+            generate_seven_day_diet(diet_goal)
 
     st.write("---")
     st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
