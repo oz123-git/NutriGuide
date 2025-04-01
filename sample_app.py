@@ -165,6 +165,7 @@ def main_app():
     water_intake = st.number_input("Water Intake (liters/day)", min_value=0.0)
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
+    # Show diet plan for 2 weeks
     if diet_duration == "2 Weeks" and st.button("Get 14-Day Nutrition Plan"):
         generate_two_week_diet()
 
