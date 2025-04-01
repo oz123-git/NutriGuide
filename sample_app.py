@@ -59,7 +59,7 @@ def login_page():
     )
 
 def generate_seven_day_diet(diet_goal):
-    # Separate meals into breakfast, lunch, and dinner for seven days based on diet goal
+    # Define the meal plans for different diet goals
     daily_menus = {
         "Weight Loss": {
             "Day 1": {
@@ -98,8 +98,86 @@ def generate_seven_day_diet(diet_goal):
                 "Dinner": "Grilled chicken with vegetables"
             }
         },
-        # Other goals can be added similarly
+        "Weight Gain": {
+            "Day 1": {
+                "Breakfast": "Aloo paratha with curd",
+                "Lunch": "Paneer butter masala with naan",
+                "Dinner": "Chicken curry with rice"
+            },
+            "Day 2": {
+                "Breakfast": "Egg sandwich with cheese",
+                "Lunch": "Chicken tikka with naan",
+                "Dinner": "Pasta with cream and veggies"
+            },
+            "Day 3": {
+                "Breakfast": "Banana milkshake with nuts",
+                "Lunch": "Butter chicken with rice",
+                "Dinner": "Vegetable biryani with raita"
+            },
+            "Day 4": {
+                "Breakfast": "Paneer bhurji with paratha",
+                "Lunch": "Rajma chawal",
+                "Dinner": "Grilled fish with salad"
+            },
+            "Day 5": {
+                "Breakfast": "French toast with syrup",
+                "Lunch": "Chicken curry with chapati",
+                "Dinner": "Pasta with pesto sauce"
+            },
+            "Day 6": {
+                "Breakfast": "Fruit smoothie with yogurt",
+                "Lunch": "Chole bhature",
+                "Dinner": "Vegetable pulao with raita"
+            },
+            "Day 7": {
+                "Breakfast": "Poha with peanuts",
+                "Lunch": "Paneer tikka with rice",
+                "Dinner": "Steak with mashed potatoes"
+            }
+        },
+        "Balanced Nutrition": {
+            "Day 1": {
+                "Breakfast": "Oats idli with chutney",
+                "Lunch": "Rajma chawal with salad",
+                "Dinner": "Grilled fish with vegetables"
+            },
+            "Day 2": {
+                "Breakfast": "Methi paratha with curd",
+                "Lunch": "Chana masala with rice",
+                "Dinner": "Tofu stir-fry with quinoa"
+            },
+            "Day 3": {
+                "Breakfast": "Pesarattu with chutney",
+                "Lunch": "Grilled chicken with salad",
+                "Dinner": "Vegetable curry with roti"
+            },
+            "Day 4": {
+                "Breakfast": "Poha with vegetables",
+                "Lunch": "Dal tadka with rice",
+                "Dinner": "Vegetable biryani with raita"
+            },
+            "Day 5": {
+                "Breakfast": "Rava upma with chutney",
+                "Lunch": "Vegetable pulao with salad",
+                "Dinner": "Dal khichdi with curd"
+            },
+            "Day 6": {
+                "Breakfast": "Moong dal chilla with chutney",
+                "Lunch": "Aloo paratha with curd",
+                "Dinner": "Lentil soup with bread"
+            },
+            "Day 7": {
+                "Breakfast": "Dosa with sambar",
+                "Lunch": "Vegetable curry with chapati",
+                "Dinner": "Fruit salad with yogurt"
+            }
+        }
     }
+
+    # Check if the diet_goal exists in the dictionary
+    if diet_goal not in daily_menus:
+        st.error("Invalid diet goal selected!")
+        return
 
     # Show the diet plan based on the goal
     st.markdown(f"### 7-Day {diet_goal} Meal Plan (Breakfast, Lunch, and Dinner):")
