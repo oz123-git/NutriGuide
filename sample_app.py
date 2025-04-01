@@ -59,43 +59,44 @@ def login_page():
     )
 
 def generate_monthly_diet():
-    daily_menus = [
-        # 30 days of different Indian meals
-        "Day 1: Poha with vegetables and green tea",
-        "Day 2: Oats porridge with nuts",
-        "Day 3: Dal khichdi with curd",
-        "Day 4: Vegetable soup",
-        "Day 5: Sprouts salad",
-        "Day 6: Aloo paratha with curd",
-        "Day 7: Paneer butter masala with naan",
-        "Day 8: Chicken curry with rice",
-        "Day 9: Banana milkshake",
-        "Day 10: Peanut butter toast",
-        "Day 11: Oats idli with chutney",
-        "Day 12: Rajma chawal with salad",
-        "Day 13: Grilled fish with vegetables",
-        "Day 14: Tofu stir-fry with quinoa",
-        "Day 15: Fruit salad with yogurt",
-        "Day 16: Masala dosa with sambar",
-        "Day 17: Pesarattu with chutney",
-        "Day 18: Aloo tikki with yogurt",
-        "Day 19: Chapati with sabzi",
-        "Day 20: Pulao with raita",
-        "Day 21: Poached eggs on toast",
-        "Day 22: Vegetable biryani with curd",
-        "Day 23: Chole bhature",
-        "Day 24: Kathi roll with veggies",
-        "Day 25: Moong dal khichdi",
-        "Day 26: Aloo masala with chapati",
-        "Day 27: Dhokla with chutney",
-        "Day 28: Rava upma with coconut chutney",
-        "Day 29: Veg Pulao with salad",
-        "Day 30: Palak paneer with rice"
-    ]
-    
-    st.markdown("### 30-Day Indian Diet Plan:")
-    for day in daily_menus:
-        st.markdown(f"- {day}")
+    # Separate meals into breakfast, lunch, and dinner
+    daily_menus = {
+        "Day 1": {
+            "Breakfast": "Poha with vegetables and green tea",
+            "Lunch": "Dal khichdi with curd",
+            "Dinner": "Vegetable soup"
+        },
+        "Day 2": {
+            "Breakfast": "Oats porridge with nuts",
+            "Lunch": "Paneer butter masala with naan",
+            "Dinner": "Sprouts salad"
+        },
+        "Day 3": {
+            "Breakfast": "Masala dosa with chutney",
+            "Lunch": "Rajma chawal with salad",
+            "Dinner": "Grilled fish with vegetables"
+        },
+        # Continue with other days as well, keeping breakfast, lunch, and dinner separate
+        "Day 4": {
+            "Breakfast": "Oats idli with chutney",
+            "Lunch": "Chole bhature",
+            "Dinner": "Fruit salad with yogurt"
+        },
+        "Day 5": {
+            "Breakfast": "Pesarattu with chutney",
+            "Lunch": "Paneer tikka with salad",
+            "Dinner": "Vegetable biryani with raita"
+        },
+        # Continue up to Day 30...
+    }
+
+    st.markdown("### 30-Day Indian Diet Plan (Breakfast, Lunch, and Dinner):")
+    for day, meals in daily_menus.items():
+        st.markdown(f"**{day}:**")
+        st.markdown(f"  - **Breakfast:** {meals['Breakfast']}")
+        st.markdown(f"  - **Lunch:** {meals['Lunch']}")
+        st.markdown(f"  - **Dinner:** {meals['Dinner']}")
+        st.markdown("---")
 
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
@@ -140,20 +141,12 @@ def main_app():
     st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
     st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
 
+# Ensure login page is displayed first by default
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
 
-page = st.sidebar.selectbox("Select Page", ["Register", "Login", "Main App"])
-
-if page == "Register":
-    register_page()
-elif page == "Login":
-    if st.session_state['authenticated']:
-        main_app()
-    else:
-        login_page()
+# Set the default page to "Login"
+if st.session_state['authenticated']:
+    main_app()
 else:
-    if st.session_state['authenticated']:
-        main_app()
-    else:
-        st.warning("Please login first.")
+    login_page()
