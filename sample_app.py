@@ -1,7 +1,6 @@
 import streamlit as st
 import json
 import datetime
-from fpdf import FPDF
 
 # File to store user data and diet plans
 db_file = "user_data.json"
@@ -67,18 +66,6 @@ def generate_diet_plan(diet_goal, duration):
                          f"- **Water Intake:** {meal_plan['Water']}\n\n")
     return full_plan
 
-def create_pdf(diet_plan, filename="diet_plan.pdf"):
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Personalized Diet Plan", ln=True, align="C")
-    pdf.ln(10)
-    for day in diet_plan:
-        pdf.multi_cell(0, 10, day)
-    pdf.output(filename)
-    return filename
-
 def register_page():
     st.title("Create an Account")
     st.image("image/nutrition_register.jpg.webp")
@@ -126,5 +113,3 @@ def main_app():
         plan = generate_diet_plan(diet_goal, diet_duration)
         for day in plan:
             st.markdown(day)
-        pdf_filename = create_pdf(plan)
-        st.download_button("Download Diet Plan as PDF", pdf_filename)
