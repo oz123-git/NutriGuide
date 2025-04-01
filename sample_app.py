@@ -59,117 +59,80 @@ def login_page():
     )
 
 def generate_seven_day_diet(diet_goal):
-    # Define the meal plans for different diet goals
+    # Define the meal plans with calories for different diet goals
     daily_menus = {
         "Weight Loss": {
             "Day 1": {
-                "Breakfast": "Poha with vegetables and green tea",
-                "Lunch": "Dal khichdi with curd",
-                "Dinner": "Vegetable soup"
+                "Breakfast": {"meal": "Poha with vegetables and green tea", "calories": 250},
+                "Lunch": {"meal": "Dal khichdi with curd", "calories": 350},
+                "Dinner": {"meal": "Vegetable soup", "calories": 150}
             },
             "Day 2": {
-                "Breakfast": "Oats porridge with nuts",
-                "Lunch": "Paneer butter masala with naan",
-                "Dinner": "Sprouts salad"
+                "Breakfast": {"meal": "Oats porridge with nuts", "calories": 300},
+                "Lunch": {"meal": "Paneer butter masala with naan", "calories": 450},
+                "Dinner": {"meal": "Sprouts salad", "calories": 200}
             },
             "Day 3": {
-                "Breakfast": "Masala dosa with chutney",
-                "Lunch": "Rajma chawal with salad",
-                "Dinner": "Grilled fish with vegetables"
+                "Breakfast": {"meal": "Masala dosa with chutney", "calories": 350},
+                "Lunch": {"meal": "Rajma chawal with salad", "calories": 400},
+                "Dinner": {"meal": "Grilled fish with vegetables", "calories": 300}
             },
             "Day 4": {
-                "Breakfast": "Oats idli with chutney",
-                "Lunch": "Chole bhature",
-                "Dinner": "Fruit salad with yogurt"
+                "Breakfast": {"meal": "Oats idli with chutney", "calories": 280},
+                "Lunch": {"meal": "Chole bhature", "calories": 500},
+                "Dinner": {"meal": "Fruit salad with yogurt", "calories": 180}
             },
             "Day 5": {
-                "Breakfast": "Pesarattu with chutney",
-                "Lunch": "Paneer tikka with salad",
-                "Dinner": "Vegetable biryani with raita"
+                "Breakfast": {"meal": "Pesarattu with chutney", "calories": 300},
+                "Lunch": {"meal": "Paneer tikka with salad", "calories": 350},
+                "Dinner": {"meal": "Vegetable biryani with raita", "calories": 400}
             },
             "Day 6": {
-                "Breakfast": "Moong dal chilla with mint chutney",
-                "Lunch": "Aloo paratha with curd",
-                "Dinner": "Lentil soup with bread"
+                "Breakfast": {"meal": "Moong dal chilla with mint chutney", "calories": 250},
+                "Lunch": {"meal": "Aloo paratha with curd", "calories": 400},
+                "Dinner": {"meal": "Lentil soup with bread", "calories": 250}
             },
             "Day 7": {
-                "Breakfast": "Dhokla with chutney",
-                "Lunch": "Vegetable pulao with raita",
-                "Dinner": "Grilled chicken with vegetables"
-            }
-        },
-        "Weight Gain": {
-            "Day 1": {
-                "Breakfast": "Aloo paratha with curd",
-                "Lunch": "Paneer butter masala with naan",
-                "Dinner": "Chicken curry with rice"
-            },
-            "Day 2": {
-                "Breakfast": "Egg sandwich with cheese",
-                "Lunch": "Chicken tikka with naan",
-                "Dinner": "Pasta with cream and veggies"
-            },
-            "Day 3": {
-                "Breakfast": "Banana milkshake with nuts",
-                "Lunch": "Butter chicken with rice",
-                "Dinner": "Vegetable biryani with raita"
-            },
-            "Day 4": {
-                "Breakfast": "Paneer bhurji with paratha",
-                "Lunch": "Rajma chawal",
-                "Dinner": "Grilled fish with salad"
-            },
-            "Day 5": {
-                "Breakfast": "French toast with syrup",
-                "Lunch": "Chicken curry with chapati",
-                "Dinner": "Pasta with pesto sauce"
-            },
-            "Day 6": {
-                "Breakfast": "Fruit smoothie with yogurt",
-                "Lunch": "Chole bhature",
-                "Dinner": "Vegetable pulao with raita"
-            },
-            "Day 7": {
-                "Breakfast": "Poha with peanuts",
-                "Lunch": "Paneer tikka with rice",
-                "Dinner": "Steak with mashed potatoes"
+                "Breakfast": {"meal": "Dhokla with chutney", "calories": 200},
+                "Lunch": {"meal": "Vegetable pulao with raita", "calories": 350},
+                "Dinner": {"meal": "Grilled chicken with vegetables", "calories": 350}
             }
         },
         "Balanced Nutrition": {
             "Day 1": {
-                "Breakfast": "Oats idli with chutney",
-                "Lunch": "Rajma chawal with salad",
-                "Dinner": "Grilled fish with vegetables"
+                "Breakfast": {"meal": "Oats idli with chutney", "calories": 280},
+                "Lunch": {"meal": "Rajma chawal with salad", "calories": 400},
+                "Dinner": {"meal": "Grilled fish with vegetables", "calories": 300}
             },
             "Day 2": {
-                "Breakfast": "Methi paratha with curd",
-                "Lunch": "Chana masala with rice",
-                "Dinner": "Tofu stir-fry with quinoa"
+                "Breakfast": {"meal": "Methi paratha with curd", "calories": 350},
+                "Lunch": {"meal": "Chana masala with rice", "calories": 400},
+                "Dinner": {"meal": "Tofu stir-fry with quinoa", "calories": 350}
             },
             "Day 3": {
-                "Breakfast": "Pesarattu with chutney",
-                "Lunch": "Grilled chicken with salad",
-                "Dinner": "Vegetable curry with roti"
+                "Breakfast": {"meal": "Pesarattu with chutney", "calories": 300},
+                "Lunch": {"meal": "Grilled chicken with salad", "calories": 350},
+                "Dinner": {"meal": "Vegetable curry with roti", "calories": 350}
             },
             "Day 4": {
-                "Breakfast": "Poha with vegetables",
-                "Lunch": "Dal tadka with rice",
-                "Dinner": "Vegetable biryani with raita"
+                "Breakfast": {"meal": "Poha with vegetables", "calories": 250},
+                "Lunch": {"meal": "Dal tadka with rice", "calories": 350},
+                "Dinner": {"meal": "Vegetable biryani with raita", "calories": 400}
             },
             "Day 5": {
-                "Breakfast": "Rava upma with chutney",
-                "Lunch": "Vegetable pulao with salad",
-                "Dinner": "Dal khichdi with curd"
+                "Breakfast": {"meal": "Rava upma with chutney", "calories": 280},
+                "Lunch": {"meal": "Vegetable pulao with salad", "calories": 350},
+                "Dinner": {"meal": "Dal khichdi with curd", "calories": 300}
             },
             "Day 6": {
-                "Breakfast": "Moong dal chilla with chutney",
-                "Lunch": "Aloo paratha with curd",
-                "Dinner": "Lentil soup with bread"
+                "Breakfast": {"meal": "Moong dal chilla with chutney", "calories": 250},
+                "Lunch": {"meal": "Aloo paratha with curd", "calories": 400},
+                "Dinner": {"meal": "Lentil soup with bread", "calories": 250}
             },
             "Day 7": {
-                "Breakfast": "Dosa with sambar",
-                "Lunch": "Vegetable curry with chapati",
-                "Dinner": "Fruit salad with yogurt"
+                "Breakfast": {"meal": "Dosa with sambar", "calories": 300},
+                "Lunch": {"meal": "Vegetable curry with chapati", "calories": 350},
+                "Dinner": {"meal": "Fruit salad with yogurt", "calories": 150}
             }
         }
     }
@@ -179,13 +142,13 @@ def generate_seven_day_diet(diet_goal):
         st.error("Invalid diet goal selected!")
         return
 
-    # Show the diet plan based on the goal
+    # Show the diet plan with calories
     st.markdown(f"### 7-Day {diet_goal} Meal Plan (Breakfast, Lunch, and Dinner):")
     for day, meals in daily_menus[diet_goal].items():
         st.markdown(f"**{day}:**")
-        st.markdown(f"  - **Breakfast:** {meals['Breakfast']}")
-        st.markdown(f"  - **Lunch:** {meals['Lunch']}")
-        st.markdown(f"  - **Dinner:** {meals['Dinner']}")
+        st.markdown(f"  - **Breakfast:** {meals['Breakfast']['meal']} (Calories: {meals['Breakfast']['calories']})")
+        st.markdown(f"  - **Lunch:** {meals['Lunch']['meal']} (Calories: {meals['Lunch']['calories']})")
+        st.markdown(f"  - **Dinner:** {meals['Dinner']['meal']} (Calories: {meals['Dinner']['calories']})")
         st.markdown("---")
     
     st.markdown("### This meal plan repeats every week.")
@@ -203,36 +166,18 @@ def main_app():
     height = st.number_input("Enter your height (cm)", min_value=50)
     weight = st.number_input("Enter your weight (kg)", min_value=10)
     gender = st.selectbox("Select Gender", ["Male", "Female", "Other"])
-    dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan"])
-    diet_goal = st.selectbox("Diet Goal", ["Weight Loss", "Weight Gain", "Balanced Nutrition"])
-    allergies = st.text_input("List any allergies (comma separated)")
-    activity_level = st.selectbox("Activity Level", ["Sedentary", "Light", "Moderate", "Active", "Very Active"])
-    diet_duration = st.selectbox("Select Diet Duration", ["1 Week", "2 Weeks", "1 Month", "3 Months", "6 Months", "1 Year"])
+    activity_level = st.selectbox("Select Activity Level", ["Low", "Moderate", "High"])
+    health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
 
-    # Optional details
-    sleep_hours = st.number_input("Sleep Hours per Day", min_value=0, max_value=24)
-    water_intake = st.number_input("Water Intake (liters/day)", min_value=0.0)
-    stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
+    # Button to generate diet plan
+    if st.button("Generate 7-Day Diet Plan", key='generate_button'):
+        generate_seven_day_diet(health_goals)
 
-    # Show diet plan for 7 days
-    if st.button("Get 7-Day Nutrition Plan"):
-        if diet_goal:
-            generate_seven_day_diet(diet_goal)
-        else:
-            st.error("Please select a diet goal.")
+if __name__ == "__main__":
+    if "authenticated" not in st.session_state:
+        st.session_state["authenticated"] = False
 
-    st.write("---")
-    st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
-    st.markdown("- Dipak Walunj\n- Divyank Wani\n- Omkar Zinjurde\n- Sakshi Ughade", unsafe_allow_html=True)
-    st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
-
-# Ensure login page is displayed first by default
-if 'authenticated' not in st.session_state:
-    st.session_state['authenticated'] = False
-
-# Set the default page to "Login"
-if st.session_state['authenticated']:
-    main_app()
-else:
-    login_page()
+    if not st.session_state["authenticated"]:
+        login_page()
+    else:
+        main_app()
