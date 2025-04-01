@@ -24,6 +24,12 @@ def register_page():
     name = st.text_input("Name")
     email = st.text_input("Email ID")
     phone = st.text_input("Phone Number")
+    age = st.number_input("Age", min_value=1)
+    weight = st.number_input("Weight (kg)", min_value=1)
+    height = st.number_input("Height (cm)", min_value=1)
+    activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly active", "Moderately active", "Very active"])
+    health_goal = st.selectbox("Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
+    dietary_preference = st.text_input("Dietary Preferences (e.g., Vegetarian, Vegan, No Dairy)")
     new_username = st.text_input("Create Username")
     new_password = st.text_input("Create Password", type='password')
 
@@ -41,10 +47,18 @@ def register_page():
                 "name": name,
                 "email": email,
                 "phone": phone,
+                "age": age,
+                "weight": weight,
+                "height": height,
+                "activity_level": activity_level,
+                "health_goal": health_goal,
+                "dietary_preference": dietary_preference,
                 "password": new_password
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
+
+    st.markdown("<p style='text-align:right;'><a href='/' style='color:blue;'>Already have an account? Login</a></p>", unsafe_allow_html=True)
 
 def login_page():
     st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
@@ -57,6 +71,7 @@ def login_page():
         if username in user_data and user_data[username]["password"] == password:
             st.success(f"Welcome back, {user_data[username]['name']}!")
             st.session_state['authenticated'] = True
+            st.session_state['user_data'] = user_data[username]
         else:
             st.error("Invalid credentials. Please try again.")
 
@@ -103,36 +118,26 @@ def generate_seven_day_diet(diet_goal):
         st.markdown(f"  - **Dinner:** {meals['Dinner']}")
         st.markdown("---")
 
-# Function to select health goal
+
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
-
+    st.markdown("**Developed by TechSpark Team:** Dipak Walunj, Divyank Wani, Omkar Zinjurde, and [Your Name]")
+    
     if st.button("Logout", key='logout_button'):
         st.session_state['authenticated'] = False
         st.success("You have been logged out.")
         return
-
-    health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-
-    if st.button("Generate 7-Day Diet Plan", key='generate_button'):
-        generate_seven_day_diet(health_goals)
-def main_app():
-    st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
-
-    if st.button("Logout", key='logout_button'):
-        st.session_state['authenticated'] = False
-        st.success("You have been logged out.")
-        return
-
-    health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-
+    
+    user_info = st.session_state.get('user_data', {})
+    health_goals = user_info.get("health_goal", "Balanced Nutrition")
+    
     if st.button("Generate 7-Day Diet Plan", key='generate_button'):
         generate_seven_day_diet(health_goals)
 
 if __name__ == "__main__":
     if "authenticated" not in st.session_state:
         st.session_state["authenticated"] = False
-
+    
     if not st.session_state["authenticated"]:
         login_page()
     else:
