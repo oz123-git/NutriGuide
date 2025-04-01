@@ -2,9 +2,10 @@ import streamlit as st
 import json
 import os
 
+# Define the user data file
 db_file = "user_data.json"
 
-# Load existing user data
+# Load existing user data from the JSON file
 def load_user_data():
     if os.path.exists(db_file):
         try:
@@ -15,18 +16,21 @@ def load_user_data():
             return {}
     return {}
 
-# Save user data
+# Save user data to the JSON file
 def save_user_data(data):
     with open(db_file, 'w') as f:
         json.dump(data, f)
 
-# Update user data
-def update_user_data(username, age, height, weight, gender, dietary_preference, health_goals):
+# Update user data when they register or update their details
+def update_user_data(username, password, age, height, weight, gender, dietary_preference, health_goals):
     user_data = load_user_data()
+    
+    # Check if username already exists, if not, add it
     if username not in user_data:
         user_data[username] = {}
     
     user_data[username] = {
+        "password": password,
         "age": age,
         "height": height,
         "weight": weight,
@@ -34,9 +38,10 @@ def update_user_data(username, age, height, weight, gender, dietary_preference, 
         "dietary_preference": dietary_preference,
         "health_goals": health_goals
     }
+    
     save_user_data(user_data)
 
-# Generate 7-day diet plan based on user health goal
+# Generate 7-day diet plan based on the user's health goal
 def generate_seven_day_diet(diet_goal):
     diet_plans = {
         "Weight Loss": {
@@ -72,7 +77,7 @@ def generate_seven_day_diet(diet_goal):
     for day, meals in diet_plans[diet_goal].items():
         st.write(f"**{day}:** {meals}")
 
-# Register new user
+# Register new user function
 def register_page():
     st.title("Registration")
     
@@ -80,6 +85,7 @@ def register_page():
     password = st.text_input("Enter a password", type="password")
     confirm_password = st.text_input("Confirm password", type="password")
     
+    # Check if passwords match
     if password != confirm_password:
         st.error("Passwords do not match!")
         return
@@ -87,9 +93,11 @@ def register_page():
     if st.button("Register"):
         user_data = load_user_data()
         
+        # Check if the username already exists
         if username in user_data:
             st.warning("Username already exists.")
         else:
+            # Update the user data with the new account
             user_data[username] = {"password": password}
             save_user_data(user_data)
             st.success("Registration successful! You can now login.")
@@ -101,10 +109,11 @@ def login_page():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     
+    # Check login credentials
     if st.button("Login"):
         user_data = load_user_data()
         
-        if username in user_data and "password" in user_data[username] and user_data[username]["password"] == password:
+        if username in user_data and user_data[username]["password"] == password:
             st.session_state['authenticated'] = True
             st.session_state['username'] = username
             st.success("Login successful!")
@@ -113,19 +122,21 @@ def login_page():
             st.error("Invalid username or password.")
             return False
     
-    # Add option to go to registration page
+    # Add option to go to the registration page
     if st.button("Don't have an account? Register here"):
-        register_page()
-        return False
+        return False  # Registration button triggers registration logic
 
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
     
+    # If not authenticated, show the login page
     if 'authenticated' not in st.session_state or not st.session_state['authenticated']:
         st.warning("Please login to access the app.")
-        if login_page():
-            return
+        if login_page() == False:
+            register_page()
+        return
 
+    # If authenticated, proceed to the main page
     username = st.session_state.get('username')
     if not username:
         st.error("Username not found in session.")
@@ -145,7 +156,7 @@ def main_app():
         health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
         
         if st.button("Save Details"):
-            update_user_data(username, age, height, weight, gender, dietary_preference, health_goals)
+            update_user_data(username, user_data[username]["password"], age, height, weight, gender, dietary_preference, health_goals)
             st.success("Your details have been saved successfully!")
     else:
         st.subheader("Your Last Diet Plan")
@@ -154,6 +165,7 @@ def main_app():
         else:
             st.warning("No diet plan found. Please update your details.")
     
+    # Logout button
     if st.button("Logout"):
         st.session_state['authenticated'] = False
         st.success("You have been logged out.")
