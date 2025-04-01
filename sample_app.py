@@ -58,12 +58,12 @@ def generate_diet_plan(diet_goal, duration):
     
     for i in range(total_days):
         meal_plan = plan[diet_goal][i % len(plan[diet_goal])]
-        full_plan.append(f"**Day {i+1}:**\n\n"
+        full_plan.append(f"Day {i+1}\n" + "="*20 + "\n"
                          f"- **Breakfast:** {meal_plan['Breakfast']}\n"
                          f"- **Lunch:** {meal_plan['Lunch']}\n"
                          f"- **Dinner:** {meal_plan['Dinner']}\n"
                          f"- **Snack:** {meal_plan['Snack']}\n"
-                         f"- **Water Intake:** {meal_plan['Water']}\n\n")
+                         f"- **Water Intake:** {meal_plan['Water']}\n")
     return full_plan
 
 def register_page():
