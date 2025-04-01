@@ -2,174 +2,227 @@ import streamlit as st
 import json
 import os
 
-# Define the user data file
-db_file = "user_data.json"
+# File to store user data
+db_file = os.path.join(os.getcwd(), "user_data.json")
 
-# Load existing user data from the JSON file
 def load_user_data():
-    if os.path.exists(db_file):
-        try:
-            with open(db_file, 'r') as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            st.error("Error reading the user data. It may be corrupted.")
-            return {}
-    return {}
+    try:
+        with open(db_file, "r") as file:
+            data = file.read().strip()
+            return json.loads(data) if data else {}
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
 
-# Save user data to the JSON file
 def save_user_data(data):
-    with open(db_file, 'w') as f:
-        json.dump(data, f)
+    with open(db_file, "w") as file:
+        json.dump(data, file, indent=4)
 
-# Update user data when they register or update their details
-def update_user_data(username, password, age, height, weight, gender, dietary_preference, health_goals):
-    user_data = load_user_data()
+def register_page():
+    st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
+    st.image("image/nutrition_register.jpg.webp")
     
-    # Check if username already exists, if not, add it
-    if username not in user_data:
-        user_data[username] = {}
-    
-    user_data[username] = {
-        "password": password,
-        "age": age,
-        "height": height,
-        "weight": weight,
-        "gender": gender,
-        "dietary_preference": dietary_preference,
-        "health_goals": health_goals
-    }
-    
-    save_user_data(user_data)
+    name = st.text_input("Name")
+    email = st.text_input("Email ID")
+    phone = st.text_input("Phone Number")
+    new_username = st.text_input("Create Username")
+    new_password = st.text_input("Create Password", type='password')
 
-# Generate 7-day diet plan based on the user's health goal
+    if st.button("Register", key='register_button'):
+        if not name or not email or not phone or not new_username or not new_password:
+            st.error("All fields are required!")
+            return
+        
+        user_data = load_user_data()
+
+        if new_username in user_data:
+            st.error("Username already exists. Please choose another.")
+        else:
+            user_data[new_username] = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+                "password": new_password
+            }
+            save_user_data(user_data)
+            st.success("Account created successfully! Please login.")
+
+def login_page():
+    st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
+    st.image("image/nutrition_login.jpg.webp")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type='password')
+
+    if st.button("Login", key='login_button'):
+        user_data = load_user_data()
+        if username in user_data and user_data[username]["password"] == password:
+            st.success(f"Welcome back, {user_data[username]['name']}!")
+            st.session_state['authenticated'] = True
+        else:
+            st.error("Invalid credentials. Please try again.")
+
 def generate_seven_day_diet(diet_goal):
     diet_plans = {
         "Weight Loss": {
-            "Day 1": "Oatmeal with nuts and fruits (Breakfast), Grilled chicken salad (Lunch), Steamed vegetables with brown rice (Dinner)",
-            "Day 2": "Boiled eggs and toast (Breakfast), Quinoa and chickpea bowl (Lunch), Vegetable soup (Dinner)",
-            "Day 3": "Greek yogurt with berries (Breakfast), Grilled salmon with veggies (Lunch), Rice and dal with salad (Dinner)",
-            "Day 4": "Scrambled eggs with whole wheat bread (Breakfast), Paneer and roti (Lunch), Chicken curry with brown rice (Dinner)",
-            "Day 5": "Fruits and nuts smoothie (Breakfast), Vegetable stir fry with tofu (Lunch), Protein smoothie with banana (Dinner)",
-            "Day 6": "Rice and dal with salad (Breakfast), Grilled chicken with quinoa (Lunch), Lean beef with rice (Dinner)",
-            "Day 7": "Peanut butter toast with milk (Breakfast), Grilled chicken salad (Lunch), Steamed vegetables with brown rice (Dinner)"
+            "Day 1": {
+                "Breakfast": "Poha with vegetables",
+                "Lunch": "Dal khichdi with curd",
+                "Dinner": "Vegetable soup"
+            },
+            "Day 2": {
+                "Breakfast": "Oatmeal with fruits",
+                "Lunch": "Quinoa salad",
+                "Dinner": "Grilled chicken with veggies"
+            },
+            "Day 3": {
+                "Breakfast": "Scrambled eggs with spinach",
+                "Lunch": "Vegetable stir fry with rice",
+                "Dinner": "Soup and toast"
+            },
+            "Day 4": {
+                "Breakfast": "Greek yogurt with nuts",
+                "Lunch": "Chickpea salad",
+                "Dinner": "Grilled fish with steamed veggies"
+            },
+            "Day 5": {
+                "Breakfast": "Smoothie with spinach, banana, and almond milk",
+                "Lunch": "Lentil soup with a side of salad",
+                "Dinner": "Cauliflower rice with stir-fried tofu"
+            },
+            "Day 6": {
+                "Breakfast": "Chia seeds pudding with berries",
+                "Lunch": "Grilled chicken salad",
+                "Dinner": "Zucchini noodles with marinara sauce"
+            },
+            "Day 7": {
+                "Breakfast": "Avocado toast with poached eggs",
+                "Lunch": "Vegetable stir fry with quinoa",
+                "Dinner": "Steamed vegetables with a side of grilled salmon"
+            }
         },
         "Balanced Nutrition": {
-            "Day 1": "Scrambled eggs with whole wheat bread (Breakfast), Grilled salmon with veggies (Lunch), Rice and dal with salad (Dinner)",
-            "Day 2": "Fruits and nuts smoothie (Breakfast), Paneer and roti (Lunch), Vegetable stir fry with tofu (Dinner)",
-            "Day 3": "Chicken curry with brown rice (Breakfast), Rice and dal with salad (Lunch), Grilled chicken with quinoa (Dinner)",
-            "Day 4": "Grilled chicken with quinoa (Breakfast), Vegetable soup (Lunch), Scrambled eggs with whole wheat bread (Dinner)",
-            "Day 5": "Greek yogurt with berries (Breakfast), Grilled salmon with veggies (Lunch), Quinoa and chickpea bowl (Dinner)",
-            "Day 6": "Oatmeal with nuts and fruits (Breakfast), Boiled eggs and toast (Lunch), Chicken curry with brown rice (Dinner)",
-            "Day 7": "Rice and dal with salad (Breakfast), Lean beef with rice (Lunch), Vegetable stir fry with tofu (Dinner)"
+            "Day 1": {
+                "Breakfast": "Pancakes with honey",
+                "Lunch": "Rice, dal, and veggies",
+                "Dinner": "Grilled chicken with mashed potatoes"
+            },
+            "Day 2": {
+                "Breakfast": "Smoothie with almond milk",
+                "Lunch": "Lentil soup with whole wheat bread",
+                "Dinner": "Fish curry with brown rice"
+            },
+            "Day 3": {
+                "Breakfast": "Omelet with whole wheat toast",
+                "Lunch": "Vegetable pulao with yogurt",
+                "Dinner": "Grilled paneer with quinoa"
+            },
+            "Day 4": {
+                "Breakfast": "Cornflakes with milk",
+                "Lunch": "Dal, roti, and sabzi",
+                "Dinner": "Chicken stew with brown rice"
+            },
+            "Day 5": {
+                "Breakfast": "Idli with coconut chutney",
+                "Lunch": "Chickpea salad with yogurt",
+                "Dinner": "Vegetable soup with bread"
+            },
+            "Day 6": {
+                "Breakfast": "Fruit salad with yogurt",
+                "Lunch": "Grilled fish with rice",
+                "Dinner": "Paneer tikka with roti"
+            },
+            "Day 7": {
+                "Breakfast": "Poha with nuts",
+                "Lunch": "Rajma rice",
+                "Dinner": "Grilled vegetables with couscous"
+            }
         },
         "Muscle Gain": {
-            "Day 1": "Protein smoothie with banana (Breakfast), Grilled chicken with quinoa (Lunch), Cottage cheese and nuts (Dinner)",
-            "Day 2": "Egg omelette with toast (Breakfast), Fish with sweet potatoes (Lunch), Lean beef with rice (Dinner)",
-            "Day 3": "Peanut butter toast with milk (Breakfast), Grilled chicken with quinoa (Lunch), Egg omelette with toast (Dinner)",
-            "Day 4": "Protein smoothie with banana (Breakfast), Grilled chicken with quinoa (Lunch), Cottage cheese and nuts (Dinner)",
-            "Day 5": "Lean beef with rice (Breakfast), Peanut butter toast with milk (Lunch), Grilled chicken with quinoa (Dinner)",
-            "Day 6": "Egg omelette with toast (Breakfast), Fish with sweet potatoes (Lunch), Protein smoothie with banana (Dinner)",
-            "Day 7": "Grilled chicken with quinoa (Breakfast), Cottage cheese and nuts (Lunch), Peanut butter toast with milk (Dinner)"
+            "Day 1": {
+                "Breakfast": "Scrambled eggs with toast",
+                "Lunch": "Grilled chicken with quinoa",
+                "Dinner": "Salmon with roasted potatoes"
+            },
+            "Day 2": {
+                "Breakfast": "Protein shake with banana",
+                "Lunch": "Lentil soup with brown rice",
+                "Dinner": "Grilled steak with vegetables"
+            },
+            "Day 3": {
+                "Breakfast": "Oats with peanut butter",
+                "Lunch": "Chicken breast with sweet potato",
+                "Dinner": "Tofu stir-fry with rice"
+            },
+            "Day 4": {
+                "Breakfast": "Greek yogurt with almonds",
+                "Lunch": "Fish with quinoa and salad",
+                "Dinner": "Grilled paneer with whole wheat bread"
+            },
+            "Day 5": {
+                "Breakfast": "Omelet with cheese",
+                "Lunch": "Beef stir fry with rice",
+                "Dinner": "Baked chicken with mashed potatoes"
+            },
+            "Day 6": {
+                "Breakfast": "Protein pancakes",
+                "Lunch": "Grilled turkey sandwich",
+                "Dinner": "Vegetable curry with brown rice"
+            },
+            "Day 7": {
+                "Breakfast": "Cottage cheese with nuts",
+                "Lunch": "Salmon with quinoa and greens",
+                "Dinner": "Steak with roasted veggies"
+            }
         }
     }
-    
-    st.subheader(f"7-Day {diet_goal} Diet Plan")
+
+    st.markdown(f"### 7-Day {diet_goal} Meal Plan:")
     for day, meals in diet_plans[diet_goal].items():
-        st.write(f"**{day}:** {meals}")
-
-# Register new user function
-def register_page():
-    st.title("Registration")
-    
-    username = st.text_input("Enter a username")
-    password = st.text_input("Enter a password", type="password")
-    confirm_password = st.text_input("Confirm password", type="password")
-    
-    # Check if passwords match
-    if password != confirm_password:
-        st.error("Passwords do not match!")
-        return
-    
-    if st.button("Register"):
-        user_data = load_user_data()
-        
-        # Check if the username already exists
-        if username in user_data:
-            st.warning("Username already exists.")
-        else:
-            # Update the user data with the new account
-            user_data[username] = {"password": password}
-            save_user_data(user_data)
-            st.success("Registration successful! You can now login.")
-
-# Login page logic with registration option
-def login_page():
-    st.title("Login")
-    
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    
-    # Check login credentials
-    if st.button("Login"):
-        user_data = load_user_data()
-        
-        if username in user_data and user_data[username]["password"] == password:
-            st.session_state['authenticated'] = True
-            st.session_state['username'] = username
-            st.success("Login successful!")
-            return True
-        else:
-            st.error("Invalid username or password.")
-            return False
-    
-    # Add option to go to the registration page
-    if st.button("Don't have an account? Register here"):
-        return False  # Registration button triggers registration logic
+        st.markdown(f"**{day}:**")
+        for meal_type, meal in meals.items():
+            st.markdown(f"  - **{meal_type}:** {meal}")
+        st.markdown("---")
 
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
-    
-    # If not authenticated, show the login page
-    if 'authenticated' not in st.session_state or not st.session_state['authenticated']:
-        st.warning("Please login to access the app.")
-        if login_page() == False:
-            register_page()
-        return
 
-    # If authenticated, proceed to the main page
-    username = st.session_state.get('username')
-    if not username:
-        st.error("Username not found in session.")
-        return
-    
-    st.success(f"Welcome back, {username}!")
-    user_data = load_user_data()
-    user = user_data.get(username, {})
-    
-    if not user.get("age"):
-        st.subheader("Enter Your Details")
-        age = st.number_input("Enter your age", min_value=1)
-        height = st.number_input("Enter your height (cm)", min_value=50)
-        weight = st.number_input("Enter your weight (kg)", min_value=10)
-        gender = st.selectbox("Select Gender", ["Male", "Female", "Other"])
-        dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan"])
-        health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-        
-        if st.button("Save Details"):
-            update_user_data(username, user_data[username]["password"], age, height, weight, gender, dietary_preference, health_goals)
-            st.success("Your details have been saved successfully!")
-    else:
-        st.subheader("Your Last Diet Plan")
-        if user.get("health_goals"):
-            generate_seven_day_diet(user["health_goals"])
-        else:
-            st.warning("No diet plan found. Please update your details.")
-    
-    # Logout button
-    if st.button("Logout"):
+    if st.button("Logout", key='logout_button'):
         st.session_state['authenticated'] = False
         st.success("You have been logged out.")
         return
 
-if __name__ == '__main__':
-    main_app()
+    # Collect user details
+    age = st.number_input("Enter your age", min_value=1)
+    height = st.number_input("Enter your height (cm)", min_value=50)
+    weight = st.number_input("Enter your weight (kg)", min_value=10)
+    gender = st.selectbox("Select Gender", ["Male", "Female", "Other"])
+    dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan"])
+    health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
+
+    # Generate Diet Plan
+    if st.button("Generate 7-Day Diet Plan", key='generate_button'):
+        generate_seven_day_diet(health_goals)
+
+    # Project Info
+    st.write("---")
+    st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
+    st.markdown("- Dipak Walunj (Roll No. 60)\n- Divyank Wani (Roll No. 61)\n- Omkar Zinjurde (Roll No. 63)\n- Sakshi Ughade (Roll No. 73)", unsafe_allow_html=True)
+    st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
+
+    # Account creation button at the bottom-right
+    st.markdown("""
+        <style>
+            .stButton > button {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    if "authenticated" not in st.session_state:
+       
