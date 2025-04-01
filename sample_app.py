@@ -134,21 +134,52 @@ def generate_seven_day_diet(diet_goal):
                 "Lunch": {"meal": "Vegetable curry with chapati", "calories": 350},
                 "Dinner": {"meal": "Fruit salad with yogurt", "calories": 150}
             }
+        },
+        "Muscle Gain": {
+            "Day 1": {
+                "Breakfast": {"meal": "Eggs with avocado and toast", "calories": 500},
+                "Lunch": {"meal": "Chicken breast with quinoa and broccoli", "calories": 600},
+                "Dinner": {"meal": "Salmon with sweet potato", "calories": 700}
+            },
+            "Day 2": {
+                "Breakfast": {"meal": "Oats with protein powder and almond butter", "calories": 550},
+                "Lunch": {"meal": "Grilled steak with vegetables", "calories": 650},
+                "Dinner": {"meal": "Chicken stir-fry with rice", "calories": 600}
+            },
+            "Day 3": {
+                "Breakfast": {"meal": "Greek yogurt with granola", "calories": 400},
+                "Lunch": {"meal": "Turkey sandwich with whole grain bread", "calories": 500},
+                "Dinner": {"meal": "Pasta with chicken and pesto", "calories": 700}
+            },
+            "Day 4": {
+                "Breakfast": {"meal": "Smoothie with protein powder", "calories": 450},
+                "Lunch": {"meal": "Grilled chicken with sweet potato", "calories": 550},
+                "Dinner": {"meal": "Salmon with quinoa and greens", "calories": 650}
+            },
+            "Day 5": {
+                "Breakfast": {"meal": "Scrambled eggs with spinach and cheese", "calories": 400},
+                "Lunch": {"meal": "Beef stir-fry with rice", "calories": 600},
+                "Dinner": {"meal": "Chicken with roasted vegetables", "calories": 500}
+            },
+            "Day 6": {
+                "Breakfast": {"meal": "Protein pancakes with syrup", "calories": 500},
+                "Lunch": {"meal": "Salmon with roasted potatoes", "calories": 600},
+                "Dinner": {"meal": "Grilled chicken with asparagus", "calories": 550}
+            },
+            "Day 7": {
+                "Breakfast": {"meal": "Egg white omelet with veggies", "calories": 350},
+                "Lunch": {"meal": "Turkey burger with sweet potato fries", "calories": 700},
+                "Dinner": {"meal": "Steak with mashed potatoes", "calories": 750}
+            }
         }
     }
 
-    # Check if the diet_goal exists in the dictionary
-    if diet_goal not in daily_menus:
-        st.error("Invalid diet goal selected!")
-        return
-
-    # Show the diet plan with calories
+    # Show the diet plan based on the goal
     st.markdown(f"### 7-Day {diet_goal} Meal Plan (Breakfast, Lunch, and Dinner):")
     for day, meals in daily_menus[diet_goal].items():
         st.markdown(f"**{day}:**")
-        st.markdown(f"  - **Breakfast:** {meals['Breakfast']['meal']} (Calories: {meals['Breakfast']['calories']})")
-        st.markdown(f"  - **Lunch:** {meals['Lunch']['meal']} (Calories: {meals['Lunch']['calories']})")
-        st.markdown(f"  - **Dinner:** {meals['Dinner']['meal']} (Calories: {meals['Dinner']['calories']})")
+        for meal_type, meal_info in meals.items():
+            st.markdown(f"  - **{meal_type}:** {meal_info['meal']} (Calories: {meal_info['calories']})")
         st.markdown("---")
     
     st.markdown("### This meal plan repeats every week.")
@@ -166,12 +197,18 @@ def main_app():
     height = st.number_input("Enter your height (cm)", min_value=50)
     weight = st.number_input("Enter your weight (kg)", min_value=10)
     gender = st.selectbox("Select Gender", ["Male", "Female", "Other"])
-    activity_level = st.selectbox("Select Activity Level", ["Low", "Moderate", "High"])
+    dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan"])
     health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
 
     # Button to generate diet plan
     if st.button("Generate 7-Day Diet Plan", key='generate_button'):
         generate_seven_day_diet(health_goals)
+
+    st.write("---")
+    st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
+    st.markdown("- Dipak Walunj\n- Divyank Wani\n- Omkar Zinjurde", unsafe_allow_html=True)
+    st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     if "authenticated" not in st.session_state:
