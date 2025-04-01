@@ -58,8 +58,8 @@ def login_page():
         unsafe_allow_html=True
     )
 
-def generate_monthly_diet():
-    # Separate meals into breakfast, lunch, and dinner
+def generate_two_week_diet():
+    # Separate meals into breakfast, lunch, and dinner for two weeks (14 days)
     daily_menus = {
         "Day 1": {
             "Breakfast": "Poha with vegetables and green tea",
@@ -76,7 +76,6 @@ def generate_monthly_diet():
             "Lunch": "Rajma chawal with salad",
             "Dinner": "Grilled fish with vegetables"
         },
-        # Continue with other days as well, keeping breakfast, lunch, and dinner separate
         "Day 4": {
             "Breakfast": "Oats idli with chutney",
             "Lunch": "Chole bhature",
@@ -87,10 +86,54 @@ def generate_monthly_diet():
             "Lunch": "Paneer tikka with salad",
             "Dinner": "Vegetable biryani with raita"
         },
-        # Continue up to Day 30...
+        "Day 6": {
+            "Breakfast": "Moong dal chilla with mint chutney",
+            "Lunch": "Aloo paratha with curd",
+            "Dinner": "Lentil soup with bread"
+        },
+        "Day 7": {
+            "Breakfast": "Dhokla with chutney",
+            "Lunch": "Vegetable pulao with raita",
+            "Dinner": "Grilled chicken with vegetables"
+        },
+        "Day 8": {
+            "Breakfast": "Upma with coconut chutney",
+            "Lunch": "Pav bhaji",
+            "Dinner": "Tofu stir-fry with quinoa"
+        },
+        "Day 9": {
+            "Breakfast": "Puri with aloo bhaji",
+            "Lunch": "Chole with rice",
+            "Dinner": "Vegetable sandwich"
+        },
+        "Day 10": {
+            "Breakfast": "Poached eggs with toast",
+            "Lunch": "Methi thepla with yogurt",
+            "Dinner": "Steamed fish with rice"
+        },
+        "Day 11": {
+            "Breakfast": "Aloo tikki with chutney",
+            "Lunch": "Kadhi with rice",
+            "Dinner": "Mushroom soup with bread"
+        },
+        "Day 12": {
+            "Breakfast": "Paratha with pickles",
+            "Lunch": "Vegetable biryani with raita",
+            "Dinner": "Rajma with chapati"
+        },
+        "Day 13": {
+            "Breakfast": "Pav bhaji with butter",
+            "Lunch": "Palak paneer with roti",
+            "Dinner": "Soya chunks curry with rice"
+        },
+        "Day 14": {
+            "Breakfast": "Idli with sambar and chutney",
+            "Lunch": "Dal fry with jeera rice",
+            "Dinner": "Chana masala with bhature"
+        }
     }
 
-    st.markdown("### 30-Day Indian Diet Plan (Breakfast, Lunch, and Dinner):")
+    st.markdown("### 14-Day Indian Diet Plan (Breakfast, Lunch, and Dinner):")
     for day, meals in daily_menus.items():
         st.markdown(f"**{day}:**")
         st.markdown(f"  - **Breakfast:** {meals['Breakfast']}")
@@ -122,8 +165,8 @@ def main_app():
     water_intake = st.number_input("Water Intake (liters/day)", min_value=0.0)
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
-    if diet_duration == "1 Month" and st.button("Get 30-Day Nutrition Plan"):
-        generate_monthly_diet()
+    if diet_duration == "2 Weeks" and st.button("Get 14-Day Nutrition Plan"):
+        generate_two_week_diet()
 
     if st.button("Get Nutrition Plan", key='plan_button'):
         st.success(f"Recommended Diet Type: {diet_goal}")
