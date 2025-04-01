@@ -60,6 +60,10 @@ def login_page():
         else:
             st.error("Invalid credentials. Please try again.")
 
+    # Create Account Button on Login Page
+    if st.button("Create Account", key='create_account_button'):
+        register_page()
+
 def generate_seven_day_diet(diet_goal):
     # Define the meal plans for different diet goals with calories
     daily_menus = {
@@ -137,27 +141,8 @@ def main_app():
     st.write("---")
     st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
     st.markdown("- Dipak Walunj\n- Divyank Wani\n- Omkar Zinjurde\n- Sakshi Ughde", unsafe_allow_html=True)
-
     st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
     st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
-
-    # Account creation button at the bottom-right
-    st.markdown("""
-        <style>
-            .stButton > button {
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 5px;
-                font-size: 16px;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-    if st.button("Create Account"):
-        register_page()
 
 if __name__ == "__main__":
     if "authenticated" not in st.session_state:
