@@ -128,3 +128,17 @@ def main_app():
         user_data[username]["last_meal"] = {"Breakfast": breakfast, "Lunch": lunch, "Dinner": dinner}
         save_user_data(user_data)
         st.success("Meals saved successfully!")
+
+def app():
+    if 'page' not in st.session_state:
+        st.session_state['page'] = 'login'
+
+    if st.session_state['page'] == "login":
+        login_page()
+    elif st.session_state['page'] == "register":
+        register_page()
+    elif st.session_state['page'] == "main":
+        main_app()
+
+if __name__ == "__main__":
+    app()
