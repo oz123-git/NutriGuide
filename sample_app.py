@@ -61,25 +61,6 @@ def login_page():
         else:
             st.error("Invalid credentials. Please try again.")
 
-    # Custom button for "Create Account" positioned at the bottom-right
-    st.markdown("""
-        <style>
-            .create-account-btn {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                cursor: pointer;
-                font-size: 14px;
-                border-radius: 5px;
-            }
-        </style>
-        <a href="javascript:void(0);" class="create-account-btn" onclick="window.location.href='/register'">Create Account</a>
-    """, unsafe_allow_html=True)
-
 def generate_seven_day_diet(diet_goal):
     diet_plans = {
         "Weight Loss": {
@@ -205,6 +186,11 @@ def generate_seven_day_diet(diet_goal):
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
 
+    if 'authenticated' not in st.session_state or not st.session_state['authenticated']:
+        st.warning("Please login to access the app.")
+        login_page()
+        return
+
     if st.button("Logout", key='logout_button'):
         st.session_state['authenticated'] = False
         st.success("You have been logged out.")
@@ -228,3 +214,25 @@ def main_app():
     st.markdown("- Dipak Walunj (Roll No. 60)\n- Divyank Wani (Roll No. 61)\n- Omkar Zinjurde (Roll No. 63)\n- Sakshi Ughade (Roll No. 73)", unsafe_allow_html=True)
     st.markdown("<p style='color: #3F51B5;'>Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
     st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
+
+    # Custom button for "Create Account" positioned at the bottom-right
+    st.markdown("""
+        <style>
+            .create-account-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                cursor: pointer;
+                font-size: 14px;
+                border-radius: 5px;
+            }
+        </style>
+        <a href="javascript:void(0);" class="create-account-btn" onclick="window.location.href='/register'">Create Account</a>
+    """)
+
+if __name__ == '__main__':
+    main_app()
