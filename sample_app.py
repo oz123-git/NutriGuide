@@ -62,42 +62,60 @@ def login_page():
 
 def generate_seven_day_diet(diet_goal):
     diet_plans = {
-        "Weight Loss": {
-            "Day 1": {"Breakfast": "Oatmeal with fruits", "Lunch": "Grilled chicken salad", "Dinner": "Vegetable soup"},
-            "Day 2": {"Breakfast": "Smoothie with spinach and banana", "Lunch": "Quinoa salad", "Dinner": "Grilled fish with veggies"},
-            "Day 3": {"Breakfast": "Boiled eggs with toast", "Lunch": "Chickpea salad", "Dinner": "Soup and steamed vegetables"},
-            "Day 4": {"Breakfast": "Greek yogurt with nuts", "Lunch": "Lentil soup with a side of brown rice", "Dinner": "Grilled tofu with stir-fry veggies"},
-            "Day 5": {"Breakfast": "Avocado toast with poached eggs", "Lunch": "Vegetable stir fry with rice", "Dinner": "Steamed vegetables with fish"},
-            "Day 6": {"Breakfast": "Chia pudding with berries", "Lunch": "Grilled chicken wrap", "Dinner": "Zucchini noodles with marinara sauce"},
-            "Day 7": {"Breakfast": "Scrambled eggs with spinach", "Lunch": "Quinoa bowl with mixed veggies", "Dinner": "Lentil soup with salad"}
-        },
-        "Balanced Nutrition": {
-            "Day 1": {"Breakfast": "Pancakes with honey", "Lunch": "Rice, dal, and veggies", "Dinner": "Grilled chicken with mashed potatoes"},
-            "Day 2": {"Breakfast": "Smoothie with almond milk", "Lunch": "Lentil soup with whole wheat bread", "Dinner": "Fish curry with brown rice"},
-            "Day 3": {"Breakfast": "Omelet with whole wheat toast", "Lunch": "Vegetable pulao with yogurt", "Dinner": "Grilled paneer with quinoa"},
-            "Day 4": {"Breakfast": "Cornflakes with milk", "Lunch": "Dal, roti, and sabzi", "Dinner": "Chicken stew with brown rice"},
-            "Day 5": {"Breakfast": "Idli with coconut chutney", "Lunch": "Chickpea salad with yogurt", "Dinner": "Vegetable soup with bread"},
-            "Day 6": {"Breakfast": "Fruit salad with yogurt", "Lunch": "Grilled fish with rice", "Dinner": "Paneer tikka with roti"},
-            "Day 7": {"Breakfast": "Poha with nuts", "Lunch": "Rajma rice", "Dinner": "Grilled vegetables with couscous"}
-        },
-        "Muscle Gain": {
-            "Day 1": {"Breakfast": "Scrambled eggs with toast", "Lunch": "Grilled chicken with quinoa", "Dinner": "Salmon with roasted potatoes"},
-            "Day 2": {"Breakfast": "Protein shake with banana", "Lunch": "Lentil soup with brown rice", "Dinner": "Grilled steak with vegetables"},
-            "Day 3": {"Breakfast": "Oats with peanut butter", "Lunch": "Chicken breast with sweet potato", "Dinner": "Tofu stir-fry with rice"},
-            "Day 4": {"Breakfast": "Greek yogurt with almonds", "Lunch": "Fish with quinoa and salad", "Dinner": "Grilled paneer with whole wheat bread"},
-            "Day 5": {"Breakfast": "Omelet with cheese", "Lunch": "Beef stir fry with rice", "Dinner": "Baked chicken with mashed potatoes"},
-            "Day 6": {"Breakfast": "Protein pancakes", "Lunch": "Grilled turkey sandwich", "Dinner": "Vegetable curry with brown rice"},
-            "Day 7": {"Breakfast": "Cottage cheese with nuts", "Lunch": "Salmon with quinoa and greens", "Dinner": "Steak with roasted veggies"}
-        }
+    "Weight Loss": {
+        "Day 1": {"Breakfast": "Vegetable Upma", "Lunch": "Palak Dal with Brown Rice", "Dinner": "Grilled Tofu with Veggies"},
+        "Day 2": {"Breakfast": "Moong Dal Chilla", "Lunch": "Quinoa with Vegetable Curry", "Dinner": "Vegetable Soup with Salad"},
+        "Day 3": {"Breakfast": "Oats with Fresh Fruits", "Lunch": "Masoor Dal with Roti", "Dinner": "Grilled Chicken Salad"},
+        "Day 4": {"Breakfast": "Poha with Peanuts", "Lunch": "Chickpea Salad with Cucumber", "Dinner": "Methi Thepla with Curd"},
+        "Day 5": {"Breakfast": "Sprouts Salad with Lemon", "Lunch": "Vegetable Khichdi", "Dinner": "Grilled Fish with Steamed Vegetables"},
+        "Day 6": {"Breakfast": "Idli with Coconut Chutney", "Lunch": "Rajma with Brown Rice", "Dinner": "Lentil Soup with Salad"},
+        "Day 7": {"Breakfast": "Smoothie with Spinach and Banana", "Lunch": "Tofu and Broccoli Stir-Fry", "Dinner": "Grilled Paneer with Vegetables"}
+    },
+    "Balanced Nutrition": {
+        "Day 1": {"Breakfast": "Aloo Paratha with Yogurt", "Lunch": "Rice with Dal and Vegetables", "Dinner": "Paneer Butter Masala with Roti"},
+        "Day 2": {"Breakfast": "Pesarattu (Green Gram Pancake)", "Lunch": "Curry with Brown Rice", "Dinner": "Palak Paneer with Roti"},
+        "Day 3": {"Breakfast": "Oats and Milk Porridge", "Lunch": "Chana Masala with Roti", "Dinner": "Vegetable Pulao with Cucumber Raita"},
+        "Day 4": {"Breakfast": "Dosa with Sambar", "Lunch": "Vegetable Biryani", "Dinner": "Methi Paratha with Curd"},
+        "Day 5": {"Breakfast": "Boiled Eggs with Whole Wheat Toast", "Lunch": "Dal Makhani with Jeera Rice", "Dinner": "Grilled Chicken with Veg Salad"},
+        "Day 6": {"Breakfast": "Upma with Vegetables", "Lunch": "Rajma with Roti", "Dinner": "Vegetable Stir-Fry with Tofu"},
+        "Day 7": {"Breakfast": "Poha with Peanuts", "Lunch": "Methi Thepla with Curd", "Dinner": "Palak Dal with Brown Rice"}
+    },
+    "Muscle Gain": {
+        "Day 1": {"Breakfast": "Paneer Paratha with Yogurt", "Lunch": "Chicken Tikka with Quinoa", "Dinner": "Grilled Salmon with Rice"},
+        "Day 2": {"Breakfast": "Oats with Peanut Butter", "Lunch": "Chicken Curry with Brown Rice", "Dinner": "Grilled Paneer with Salad"},
+        "Day 3": {"Breakfast": "Boiled Eggs with Whole Wheat Toast", "Lunch": "Chickpea Salad with Quinoa", "Dinner": "Grilled Fish with Rice"},
+        "Day 4": {"Breakfast": "Protein Shake with Banana", "Lunch": "Grilled Chicken with Steamed Veggies", "Dinner": "Lentil Soup with Brown Rice"},
+        "Day 5": {"Breakfast": "Greek Yogurt with Almonds", "Lunch": "Vegetable Pulao with Raita", "Dinner": "Grilled Tofu Stir Fry"},
+        "Day 6": {"Breakfast": "Scrambled Eggs with Toast", "Lunch": "Grilled Turkey Sandwich", "Dinner": "Fish Curry with Brown Rice"},
+        "Day 7": {"Breakfast": "Cottage Cheese with Nuts", "Lunch": "Paneer Bhurji with Roti", "Dinner": "Grilled Chicken with Vegetables"}
     }
-    
+}
+
+# Function to generate diet plan based on user's health goal
+def generate_seven_day_diet(diet_goal):
     st.markdown(f"### 7-Day {diet_goal} Meal Plan:")
+    
+    # Display the meals for each day
     for day, meals in diet_plans[diet_goal].items():
         st.markdown(f"**{day}:**")
-        for meal_type, meal in meals.items():
-            st.markdown(f"  - **{meal_type}:** {meal}")
+        st.markdown(f"  - **Breakfast:** {meals['Breakfast']}")
+        st.markdown(f"  - **Lunch:** {meals['Lunch']}")
+        st.markdown(f"  - **Dinner:** {meals['Dinner']}")
         st.markdown("---")
 
+# Function to select health goal
+def main_app():
+    st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
+
+    if st.button("Logout", key='logout_button'):
+        st.session_state['authenticated'] = False
+        st.success("You have been logged out.")
+        return
+
+    health_goals = st.selectbox("Select Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
+
+    if st.button("Generate 7-Day Diet Plan", key='generate_button'):
+        generate_seven_day_diet(health_goals)
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
 
