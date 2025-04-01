@@ -210,12 +210,4 @@ def main_app():
     st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
 
     # Account creation button at the bottom-right
-    st.markdown("""
-        <style>
-            .stButton > button {
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
+    
