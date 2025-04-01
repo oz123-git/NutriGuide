@@ -52,6 +52,51 @@ def login_page():
         else:
             st.error("Invalid credentials. Please try again.")
 
+    # Create account link at the bottom right
+    st.markdown(
+        "<p style='position: absolute; bottom: 20px; right: 20px;'><a href='#' style='color: #4CAF50;'>Create an Account</a></p>", 
+        unsafe_allow_html=True
+    )
+
+def generate_monthly_diet():
+    daily_menus = [
+        # 30 days of different Indian meals
+        "Day 1: Poha with vegetables and green tea",
+        "Day 2: Oats porridge with nuts",
+        "Day 3: Dal khichdi with curd",
+        "Day 4: Vegetable soup",
+        "Day 5: Sprouts salad",
+        "Day 6: Aloo paratha with curd",
+        "Day 7: Paneer butter masala with naan",
+        "Day 8: Chicken curry with rice",
+        "Day 9: Banana milkshake",
+        "Day 10: Peanut butter toast",
+        "Day 11: Oats idli with chutney",
+        "Day 12: Rajma chawal with salad",
+        "Day 13: Grilled fish with vegetables",
+        "Day 14: Tofu stir-fry with quinoa",
+        "Day 15: Fruit salad with yogurt",
+        "Day 16: Masala dosa with sambar",
+        "Day 17: Pesarattu with chutney",
+        "Day 18: Aloo tikki with yogurt",
+        "Day 19: Chapati with sabzi",
+        "Day 20: Pulao with raita",
+        "Day 21: Poached eggs on toast",
+        "Day 22: Vegetable biryani with curd",
+        "Day 23: Chole bhature",
+        "Day 24: Kathi roll with veggies",
+        "Day 25: Moong dal khichdi",
+        "Day 26: Aloo masala with chapati",
+        "Day 27: Dhokla with chutney",
+        "Day 28: Rava upma with coconut chutney",
+        "Day 29: Veg Pulao with salad",
+        "Day 30: Palak paneer with rice"
+    ]
+    
+    st.markdown("### 30-Day Indian Diet Plan:")
+    for day in daily_menus:
+        st.markdown(f"- {day}")
+
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
 
@@ -75,6 +120,9 @@ def main_app():
     sleep_hours = st.number_input("Sleep Hours per Day", min_value=0, max_value=24)
     water_intake = st.number_input("Water Intake (liters/day)", min_value=0.0)
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
+
+    if diet_duration == "1 Month" and st.button("Get 30-Day Nutrition Plan"):
+        generate_monthly_diet()
 
     if st.button("Get Nutrition Plan", key='plan_button'):
         st.success(f"Recommended Diet Type: {diet_goal}")
