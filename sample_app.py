@@ -137,9 +137,11 @@ def main_app():
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
     # Show diet plan for 7 days
-    if diet_duration == "1 Week":
-        if st.button("Get 7-Day Nutrition Plan"):
+    if st.button("Get 7-Day Nutrition Plan"):
+        if diet_goal:
             generate_seven_day_diet(diet_goal)
+        else:
+            st.error("Please select a diet goal.")
 
     st.write("---")
     st.markdown("<p style='color: #3F51B5;'><b>Project by TechSpark Group</b></p>", unsafe_allow_html=True)
