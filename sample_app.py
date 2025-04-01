@@ -166,8 +166,9 @@ def main_app():
     stress_level = st.selectbox("Stress Level", ["Low", "Medium", "High"])
 
     # Show diet plan for 2 weeks
-    if diet_duration == "2 Weeks" and st.button("Get 14-Day Nutrition Plan"):
-        generate_two_week_diet()
+    if diet_duration == "2 Weeks":
+        if st.button("Get 14-Day Nutrition Plan"):
+            generate_two_week_diet()
 
     if st.button("Get Nutrition Plan", key='plan_button'):
         st.success(f"Recommended Diet Type: {diet_goal}")
