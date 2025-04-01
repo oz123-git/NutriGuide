@@ -32,7 +32,7 @@ def login_page():
 
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
-    st.image("image/nutrition_register.jpg.webp")
+    st.image("image/nutrition_register.jpg.webp")  # Update with your actual image path
     
     name = st.text_input("Name")
     email = st.text_input("Email ID")
@@ -129,20 +129,19 @@ def main_app():
     st.markdown("<p style='color: #3F51B5;'>Contact: techspark.support@gmail.com</p>", unsafe_allow_html=True)
 
     # Account creation button at the bottom-right
-    st.markdown("""
-        <style>
-            .stButton > button {
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 5px;
-                font-size: 16px;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+    st.markdown("""<style>
+        .stButton > button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>""", unsafe_allow_html=True)
+    
     if st.button("Create Account"):
         register_page()
 
