@@ -59,132 +59,37 @@ def register_page():
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
 
-ddef generate_seven_day_diet(diet_goal):
+def generate_seven_day_diet(diet_goal):
     # Define the meal plans for different diet goals
     daily_menus = {
         "Weight Loss": {
-            "Day 1": {
-                "Breakfast": "Poha with vegetables and green tea", 
-                "Lunch": "Dal khichdi with curd", 
-                "Dinner": "Vegetable soup"
-            },
-            "Day 2": {
-                "Breakfast": "Oatmeal with fruits", 
-                "Lunch": "Quinoa salad", 
-                "Dinner": "Grilled chicken with veggies"
-            },
-            "Day 3": {
-                "Breakfast": "Scrambled eggs with spinach", 
-                "Lunch": "Vegetable stir fry with rice", 
-                "Dinner": "Soup and toast"
-            },
-            "Day 4": {
-                "Breakfast": "Greek yogurt with nuts", 
-                "Lunch": "Chickpea salad", 
-                "Dinner": "Grilled fish with steamed veggies"
-            },
-            "Day 5": {
-                "Breakfast": "Smoothie with spinach, banana, and almond milk", 
-                "Lunch": "Lentil soup with a side of salad", 
-                "Dinner": "Cauliflower rice with stir-fried tofu"
-            },
-            "Day 6": {
-                "Breakfast": "Chia seeds pudding with berries", 
-                "Lunch": "Grilled chicken salad", 
-                "Dinner": "Zucchini noodles with marinara sauce"
-            },
-            "Day 7": {
-                "Breakfast": "Avocado toast with poached eggs", 
-                "Lunch": "Vegetable stir fry with quinoa", 
-                "Dinner": "Steamed vegetables with a side of grilled salmon"
-            }
+            "Day 1": {"Breakfast": "Poha with vegetables and green tea", "Lunch": "Dal khichdi with curd", "Dinner": "Vegetable soup"},
+            "Day 2": {"Breakfast": "Oatmeal with fruits", "Lunch": "Quinoa salad", "Dinner": "Grilled chicken with veggies"},
+            "Day 3": {"Breakfast": "Scrambled eggs with spinach", "Lunch": "Vegetable stir fry with rice", "Dinner": "Soup and toast"},
+            "Day 4": {"Breakfast": "Greek yogurt with nuts", "Lunch": "Chickpea salad", "Dinner": "Grilled fish with steamed veggies"},
+            "Day 5": {"Breakfast": "Smoothie with spinach, banana, and almond milk", "Lunch": "Lentil soup with a side of salad", "Dinner": "Cauliflower rice with stir-fried tofu"},
+            "Day 6": {"Breakfast": "Chia seeds pudding with berries", "Lunch": "Grilled chicken salad", "Dinner": "Zucchini noodles with marinara sauce"},
+            "Day 7": {"Breakfast": "Avocado toast with poached eggs", "Lunch": "Vegetable stir fry with quinoa", "Dinner": "Steamed vegetables with a side of grilled salmon"}
         },
         "Balanced Nutrition": {
-            "Day 1": {
-                "Breakfast": "Eggs and toast", 
-                "Lunch": "Chicken salad", 
-                "Dinner": "Grilled salmon with quinoa"
-            },
-            "Day 2": {
-                "Breakfast": "Greek yogurt with honey and granola", 
-                "Lunch": "Tuna sandwich with veggies", 
-                "Dinner": "Stir-fried chicken with brown rice"
-            },
-            "Day 3": {
-                "Breakfast": "Avocado toast with eggs", 
-                "Lunch": "Vegetable wrap with hummus", 
-                "Dinner": "Baked salmon with sweet potatoes"
-            },
-            "Day 4": {
-                "Breakfast": "Smoothie with spinach, banana, and protein powder", 
-                "Lunch": "Turkey sandwich with a side salad", 
-                "Dinner": "Spaghetti with marinara sauce"
-            },
-            "Day 5": {
-                "Breakfast": "Whole grain toast with peanut butter", 
-                "Lunch": "Chicken Caesar salad", 
-                "Dinner": "Grilled shrimp with vegetables"
-            },
-            "Day 6": {
-                "Breakfast": "Oatmeal with almonds and chia seeds", 
-                "Lunch": "Roast beef with a side of veggies", 
-                "Dinner": "Grilled chicken with roasted potatoes"
-            },
-            "Day 7": {
-                "Breakfast": "Egg and vegetable omelet", 
-                "Lunch": "Quinoa salad with feta", 
-                "Dinner": "Baked chicken with steamed broccoli"
-            }
+            "Day 1": {"Breakfast": "Eggs and toast", "Lunch": "Chicken salad", "Dinner": "Grilled salmon with quinoa"},
+            "Day 2": {"Breakfast": "Greek yogurt with honey and granola", "Lunch": "Tuna sandwich with veggies", "Dinner": "Stir-fried chicken with brown rice"},
+            "Day 3": {"Breakfast": "Avocado toast with eggs", "Lunch": "Vegetable wrap with hummus", "Dinner": "Baked salmon with sweet potatoes"},
+            "Day 4": {"Breakfast": "Smoothie with spinach, banana, and protein powder", "Lunch": "Turkey sandwich with a side salad", "Dinner": "Spaghetti with marinara sauce"},
+            "Day 5": {"Breakfast": "Whole grain toast with peanut butter", "Lunch": "Chicken Caesar salad", "Dinner": "Grilled shrimp with vegetables"},
+            "Day 6": {"Breakfast": "Oatmeal with almonds and chia seeds", "Lunch": "Roast beef with a side of veggies", "Dinner": "Grilled chicken with roasted potatoes"},
+            "Day 7": {"Breakfast": "Egg and vegetable omelet", "Lunch": "Quinoa salad with feta", "Dinner": "Baked chicken with steamed broccoli"}
         },
         "Muscle Gain": {
-            "Day 1": {
-                "Breakfast": "Omelette with whole grain bread", 
-                "Lunch": "Chicken with rice", 
-                "Dinner": "Protein shake with nuts"
-            },
-            "Day 2": {
-                "Breakfast": "Greek yogurt with protein powder and fruit", 
-                "Lunch": "Turkey sandwich with whole-grain bread", 
-                "Dinner": "Steak with quinoa and veggies"
-            },
-            "Day 3": {
-                "Breakfast": "Scrambled eggs with avocado and toast", 
-                "Lunch": "Chicken and vegetable stir fry with brown rice", 
-                "Dinner": "Salmon with sweet potatoes and asparagus"
-            },
-            "Day 4": {
-                "Breakfast": "Protein pancakes with berries", 
-                "Lunch": "Grilled chicken with quinoa and spinach", 
-                "Dinner": "Lentil soup with grilled chicken"
-            },
-            "Day 5": {
-                "Breakfast": "Peanut butter smoothie with protein powder", 
-                "Lunch": "Tuna salad with avocado and whole grain crackers", 
-                "Dinner": "Grilled pork chops with mashed potatoes"
-            },
-            "Day 6": {
-                "Breakfast": "Egg white omelette with veggies", 
-                "Lunch": "Chicken burrito bowl with brown rice", 
-                "Dinner": "Grilled chicken with sweet potato fries"
-            },
-            "Day 7": {
-                "Breakfast": "Oats with milk, protein powder, and banana", 
-                "Lunch": "Grilled shrimp with rice and vegetables", 
-                "Dinner": "Beef stir fry with quinoa"
-            }
+            "Day 1": {"Breakfast": "Omelette with whole grain bread", "Lunch": "Chicken with rice", "Dinner": "Protein shake with nuts"},
+            "Day 2": {"Breakfast": "Greek yogurt with protein powder and fruit", "Lunch": "Turkey sandwich with whole-grain bread", "Dinner": "Steak with quinoa and veggies"},
+            "Day 3": {"Breakfast": "Scrambled eggs with avocado and toast", "Lunch": "Chicken and vegetable stir fry with brown rice", "Dinner": "Salmon with sweet potatoes and asparagus"},
+            "Day 4": {"Breakfast": "Protein pancakes with berries", "Lunch": "Grilled chicken with quinoa and spinach", "Dinner": "Lentil soup with grilled chicken"},
+            "Day 5": {"Breakfast": "Peanut butter smoothie with protein powder", "Lunch": "Tuna salad with avocado and whole grain crackers", "Dinner": "Grilled pork chops with mashed potatoes"},
+            "Day 6": {"Breakfast": "Egg white omelette with veggies", "Lunch": "Chicken burrito bowl with brown rice", "Dinner": "Grilled chicken with sweet potato fries"},
+            "Day 7": {"Breakfast": "Oats with milk, protein powder, and banana", "Lunch": "Grilled shrimp with rice and vegetables", "Dinner": "Beef stir fry with quinoa"}
         }
     }
-
-    # Show the diet plan based on the goal
-    st.markdown(f"### 7-Day {diet_goal} Meal Plan (Breakfast, Lunch, and Dinner):")
-    for day, meals in daily_menus[diet_goal].items():
-        st.markdown(f"**{day}:**")
-        for meal_type, meal_info in meals.items():
-            st.markdown(f"  - **{meal_type}:** {meal_info}")
-        st.markdown("---")
-    
-    st.markdown("### This meal plan repeats every week.")
-
 
     # Show the diet plan based on the goal
     st.markdown(f"### 7-Day {diet_goal} Meal Plan (Breakfast, Lunch, and Dinner):")
