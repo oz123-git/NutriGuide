@@ -106,7 +106,9 @@ def main_app():
 
     # Collect user details if they haven't been entered yet
     user_data = load_user_data()
-    if user_data[username]["age"] is None:
+
+    # Check if user data is missing some fields like age, and ask to fill them
+    if user_data.get(username, {}).get("age") is None:
         st.subheader("Enter Your Details")
 
         age = st.number_input("Enter your age", min_value=1)
@@ -128,7 +130,7 @@ def main_app():
 
     # Generate Diet Plan
     if st.button("Generate 7-Day Diet Plan", key='generate_button'):
-        generate_seven_day_diet(user_data[username]["health_goals"])
+        generate_seven_day_diet(user_data.get(username, {}).get("health_goals", "Balanced Nutrition"))
 
     # Project Info
     st.write("---")
