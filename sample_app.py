@@ -64,7 +64,7 @@ def login_page():
         if username in user_data and user_data[username]["password"] == password:
             st.success(f"Welcome back, {user_data[username]['name']}!")
             st.session_state['authenticated'] = True
-            st.session_state['username'] = username  # Store username in session state
+            st.session_state['username'] = username  # Set username in session state
         else:
             st.error("Invalid credentials. Please try again.")
 
@@ -93,7 +93,16 @@ def main_app():
         login_page()
         return
 
-    username = st.session_state['username']
+    # Ensure username exists in session state before using it
+    if 'username' in st.session_state:
+        username = st.session_state['username']
+    else:
+        username = None  # Handle case where username is not set
+
+    if username:
+        st.success(f"Welcome back, {username}!")
+    else:
+        st.error("Username not found in session.")
 
     # Collect user details if they haven't been entered yet
     user_data = load_user_data()
