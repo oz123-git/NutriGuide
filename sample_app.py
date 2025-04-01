@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import os
+
 # File to store user data
 db_file = os.path.join(os.getcwd(), "user_data.json")
 
@@ -15,6 +16,20 @@ def load_user_data():
 def save_user_data(data):
     with open(db_file, "w") as file:
         json.dump(data, file, indent=4)
+
+def login_page():
+    st.markdown("<h1 style='color: #4CAF50;'>Login Page</h1>", unsafe_allow_html=True)
+    username = st.text_input("Username")
+    password = st.text_input("Password", type='password')
+
+    if st.button("Login"):
+        user_data = load_user_data()
+        if username in user_data and user_data[username]["password"] == password:
+            st.session_state['authenticated'] = True
+            st.success("Logged in successfully!")
+        else:
+            st.error("Invalid username or password.")
+
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_register.jpg.webp")
@@ -25,7 +40,7 @@ def register_page():
     new_username = st.text_input("Create Username")
     new_password = st.text_input("Create Password", type='password')
 
-    if st.button("Register", key='register_button'):
+    if st.button("Register"):
         if not name or not email or not phone or not new_username or not new_password:
             st.error("All fields are required!")
             return
@@ -43,7 +58,8 @@ def register_page():
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
-def generate_seven_day_diet(diet_goal):
+
+ddef generate_seven_day_diet(diet_goal):
     # Define the meal plans for different diet goals
     daily_menus = {
         "Weight Loss": {
@@ -168,6 +184,18 @@ def generate_seven_day_diet(diet_goal):
         st.markdown("---")
     
     st.markdown("### This meal plan repeats every week.")
+
+
+    # Show the diet plan based on the goal
+    st.markdown(f"### 7-Day {diet_goal} Meal Plan (Breakfast, Lunch, and Dinner):")
+    for day, meals in daily_menus[diet_goal].items():
+        st.markdown(f"**{day}:**")
+        for meal_type, meal_info in meals.items():
+            st.markdown(f"  - **{meal_type}:** {meal_info}")
+        st.markdown("---")
+    
+    st.markdown("### This meal plan repeats every week.")
+
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
 
@@ -212,6 +240,7 @@ def main_app():
     """, unsafe_allow_html=True)
     if st.button("Create Account"):
         register_page()
+
 if __name__ == "__main__":
     if "authenticated" not in st.session_state:
         st.session_state["authenticated"] = False
