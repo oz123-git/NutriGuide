@@ -17,7 +17,18 @@ def save_user_data(data):
     with open(db_file, "w") as file:
         json.dump(data, file, indent=4)
 
-# Define diet plans
+# Function to calculate caloric needs
+def calculate_bmr(weight, height, age, activity_level):
+    bmr = 10 * weight + 6.25 * height - 5 * age + 5  # Mifflin-St Jeor Equation for males
+    activity_multiplier = {
+        "Sedentary": 1.2,
+        "Lightly Active": 1.375,
+        "Moderately Active": 1.55,
+        "Very Active": 1.725
+    }
+    return bmr * activity_multiplier[activity_level]
+
+# Diet plans
 diet_plans = {
     "Weight Loss": {
         "Day 1": {"Breakfast": "Poha", "Lunch": "Dal khichdi", "Dinner": "Vegetable soup"},
@@ -32,17 +43,6 @@ diet_plans = {
         "Day 2": {"Breakfast": "Protein Shake", "Lunch": "Lentil Soup", "Dinner": "Grilled Steak"},
     }
 }
-
-# Function to calculate caloric needs
-def calculate_bmr(weight, height, age, activity_level):
-    bmr = 10 * weight + 6.25 * height - 5 * age + 5  # For males
-    activity_multiplier = {
-        "Sedentary": 1.2,
-        "Lightly Active": 1.375,
-        "Moderately Active": 1.55,
-        "Very Active": 1.725
-    }
-    return bmr * activity_multiplier[activity_level]
 
 # Register Page
 def register_page():
@@ -114,10 +114,21 @@ def main_app():
     user_data = load_user_data()
     username = st.session_state['username']
     
-    st.markdown(f"*Welcome, {user_data[username]['name']}!*")
+    if username not in user_data:
+        st.error("User data not found. Please log in again.")
+        return
+    
+    if any(k not in user_data[username] for k in ["weight", "height", "age", "activity_level"]):
+        st.error("Incomplete user data. Please update your profile.")
+        return
 
-    # Display estimated caloric needs
-    tdee = calculate_bmr(user_data[username]['weight'], user_data[username]['height'], user_data[username]['age'], user_data[username]['activity_level'])
+    weight = user_data[username].get("weight", 70)
+    height = user_data[username].get("height", 170)
+    age = user_data[username].get("age", 30)
+    activity_level = user_data[username].get("activity_level", "Sedentary")
+
+    # Calculate and display caloric needs
+    tdee = calculate_bmr(weight, height, age, activity_level)
     st.markdown(f"**Estimated Daily Caloric Needs:** {round(tdee)} kcal")
 
     # Select diet plan
