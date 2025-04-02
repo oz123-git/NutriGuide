@@ -155,5 +155,5 @@ def main():
     elif st.session_state['page'] == 'main':
         main_app()
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     main()
