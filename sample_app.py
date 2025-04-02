@@ -56,18 +56,11 @@ def register_page():
     name = st.text_input("Name")
     email = st.text_input("Email ID")
     phone = st.text_input("Phone Number")
-    age = st.number_input("Age", min_value=0, max_value=120, step=1)
-    height = st.number_input("Height (cm)", min_value=50, max_value=250, step=1)
-    weight = st.number_input("Weight (kg)", min_value=10, max_value=300, step=1)
-    gender = st.selectbox("Gender", ["Male", "Female", "Other"])
-    group_name = st.text_input("Group Name")
-    group_members = st.text_area("Group Members (comma-separated)")
-    college_name = st.text_input("College Name")
     new_username = st.text_input("Create Username")
     new_password = st.text_input("Create Password", type='password')
 
     if st.button("Register"):
-        if not all([name, email, phone, new_username, new_password, age, height, weight, gender, group_name, group_members, college_name]):
+        if not all([name, email, phone, new_username, new_password]):
             st.error("All fields are required!")
             return
         
@@ -81,13 +74,6 @@ def register_page():
                 "email": email,
                 "phone": phone,
                 "password": new_password,
-                "age": age,
-                "height": height,
-                "weight": weight,
-                "gender": gender,
-                "group_name": group_name,
-                "group_members": [member.strip() for member in group_members.split(",")],
-                "college_name": college_name,
                 "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
                 "diet_plan": {}  # Empty diet plan initially
             }
@@ -114,6 +100,60 @@ def login_page():
             st.session_state['username'] = username
             st.session_state['page'] = "main"
         else:
-            st.error("Invalid
-::contentReference[oaicite:0]{index=0}
- 
+            st.error("Invalid credentials. Please try again.")
+
+    if st.button("Create Account"):
+        st.session_state['page'] = "register"
+
+# Main App: Diet Plan and Meal Saving
+def main_app():
+    st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
+
+    if st.button("Logout"):
+        st.session_state['authenticated'] = False
+        st.session_state['page'] = "login"
+        return
+
+    user_data = load_user_data()
+    username = st.session_state['username']
+    
+    st.markdown(f"*Welcome, {user_data[username]['name']}!*")
+
+    # Select diet plan
+    diet_choice = st.selectbox("Select your diet plan", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
+    if diet_choice:
+        user_data[username]['diet_plan'] = diet_plans[diet_choice]
+        save_user_data(user_data)
+        st.success(f"Your {diet_choice} diet plan has been saved!")
+
+    # Display last meal
+    last_meal = user_data[username].get("last_meal", {"Breakfast": "No record", "Lunch": "No record", "Dinner": "No record"})
+    st.markdown("*Last Recorded Meals:*")
+    st.markdown(f"- *Breakfast:* {last_meal['Breakfast']}")
+    st.markdown(f"- *Lunch:* {last_meal['Lunch']}")
+    st.markdown(f"- *Dinner:* {last_meal['Dinner']}")
+
+    # Meal Input
+    breakfast = st.text_input("Enter your Breakfast details")
+    lunch = st.text_input("Enter your Lunch details")
+    dinner = st.text_input("Enter your Dinner details")
+    
+    if st.button("Save Meals"):
+        user_data[username]["last_meal"] = {"Breakfast": breakfast, "Lunch": lunch, "Dinner": dinner}
+        save_user_data(user_data)
+        st.success("Meals saved successfully!")
+
+# Main function to control the app navigation
+def main():
+    if 'page' not in st.session_state:
+        st.session_state['page'] = 'login'
+
+    if st.session_state['page'] == 'login':
+        login_page()
+    elif st.session_state['page'] == 'register':
+        register_page()
+    elif st.session_state['page'] == 'main':
+        main_app()
+
+if _name_ == "_main_":
+    main()
