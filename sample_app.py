@@ -88,32 +88,33 @@ def register_page():
             return
         
         user_data = load_user_data()
-
         if new_username in user_data:
             st.error("Username already exists. Please choose another.")
         else:
             user_data[new_username] = {
                 "name": name,
-                "age": age,
-                "gender": gender,
-                "height": height,
-                "weight": weight,
-                "activity_level": activity_level,
                 "health_goal": health_goal,
-                "email": email,
-                "phone": phone,
                 "password": new_password,
-                "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
                 "diet_plan": diet_plans.get(health_goal, {})
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
             st.session_state['page'] = "login"
 
-    if st.button("Back to Login"):
-        st.session_state['page'] = "login"
+# Main Dashboard
+def main_dashboard():
+    st.write(f"Welcome {st.session_state.get('username', 'User')} to AI Nutrition App")
+    user_data = load_user_data()
+    username = st.session_state.get('username')
+    if username in user_data:
+        st.write("### Your Diet Plan")
+        diet_plan = user_data[username].get("diet_plan", {})
+        for day, meals in diet_plan.items():
+            st.write(f"**{day}**")
+            for meal, item in meals.items():
+                st.write(f"- {meal}: {item}")
 
-# Main function to control the app navigation
+# Main function
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'login'
@@ -123,7 +124,7 @@ def main():
     elif st.session_state['page'] == 'register':
         register_page()
     elif st.session_state['page'] == 'main':
-        st.write("Welcome to AI Nutrition App")
+        main_dashboard()
 
 if __name__ == "__main__":
     main()
