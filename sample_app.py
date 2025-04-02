@@ -87,7 +87,7 @@ def register_page():
                 "phone": phone,
                 "password": new_password,
                 "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
-                "diet_plan": diet_plans[health_goal]
+                "diet_plan": diet_plans.get(health_goal, {})
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
