@@ -26,7 +26,7 @@ def calculate_bmr(weight, height, age, activity_level):
         "Moderately Active": 1.55,
         "Very Active": 1.725
     }
-    return bmr * activity_multiplier[activity_level]
+    return bmr * activity_multiplier.get(activity_level, 1.2)
 
 # Diet plans
 diet_plans = {
