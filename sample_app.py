@@ -17,37 +17,6 @@ def save_user_data(data):
     with open(db_file, "w") as file:
         json.dump(data, file, indent=4)
 
-# Define diet plans
-diet_plans = {
-    "Weight Loss": {
-        "Day 1": {"Breakfast": "Poha", "Lunch": "Dal khichdi", "Dinner": "Vegetable soup"},
-        "Day 2": {"Breakfast": "Oatmeal", "Lunch": "Quinoa salad", "Dinner": "Grilled chicken"},
-        "Day 3": {"Breakfast": "Eggs & Spinach", "Lunch": "Veg Stir Fry", "Dinner": "Soup & Toast"},
-        "Day 4": {"Breakfast": "Greek Yogurt", "Lunch": "Chickpea Salad", "Dinner": "Grilled Fish"},
-        "Day 5": {"Breakfast": "Smoothie", "Lunch": "Lentil Soup", "Dinner": "Cauliflower Rice"},
-        "Day 6": {"Breakfast": "Chia Pudding", "Lunch": "Grilled Chicken Salad", "Dinner": "Zucchini Noodles"},
-        "Day 7": {"Breakfast": "Avocado Toast", "Lunch": "Veg Stir Fry", "Dinner": "Steamed Veggies"}
-    },
-    "Balanced Nutrition": {
-        "Day 1": {"Breakfast": "Pancakes", "Lunch": "Rice & Dal", "Dinner": "Grilled Chicken"},
-        "Day 2": {"Breakfast": "Smoothie", "Lunch": "Lentil Soup", "Dinner": "Fish Curry"},
-        "Day 3": {"Breakfast": "Omelet", "Lunch": "Vegetable Pulao", "Dinner": "Paneer with Quinoa"},
-        "Day 4": {"Breakfast": "Cornflakes", "Lunch": "Dal & Roti", "Dinner": "Chicken Stew"},
-        "Day 5": {"Breakfast": "Idli", "Lunch": "Chickpea Salad", "Dinner": "Vegetable Soup"},
-        "Day 6": {"Breakfast": "Fruit Salad", "Lunch": "Grilled Fish", "Dinner": "Paneer Tikka"},
-        "Day 7": {"Breakfast": "Poha", "Lunch": "Rajma Rice", "Dinner": "Grilled Veggies"}
-    },
-    "Muscle Gain": {
-        "Day 1": {"Breakfast": "Eggs & Toast", "Lunch": "Chicken & Quinoa", "Dinner": "Salmon & Potatoes"},
-        "Day 2": {"Breakfast": "Protein Shake", "Lunch": "Lentil Soup", "Dinner": "Grilled Steak"},
-        "Day 3": {"Breakfast": "Oats & Peanut Butter", "Lunch": "Chicken & Sweet Potato", "Dinner": "Tofu Stir Fry"},
-        "Day 4": {"Breakfast": "Greek Yogurt", "Lunch": "Fish & Quinoa", "Dinner": "Grilled Paneer"},
-        "Day 5": {"Breakfast": "Omelet", "Lunch": "Beef Stir Fry", "Dinner": "Baked Chicken"},
-        "Day 6": {"Breakfast": "Protein Pancakes", "Lunch": "Turkey Sandwich", "Dinner": "Veg Curry"},
-        "Day 7": {"Breakfast": "Cottage Cheese", "Lunch": "Salmon & Greens", "Dinner": "Steak & Roasted Veggies"}
-    }
-}
-
 # Register Page
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
@@ -58,6 +27,14 @@ def register_page():
     phone = st.text_input("Phone Number")
     new_username = st.text_input("Create Username")
     new_password = st.text_input("Create Password", type='password')
+
+    # User Details
+    st.subheader("Enter Your Details")
+    age = st.number_input("Age", min_value=1, max_value=100, value=25)
+    height = st.number_input("Height (cm)", min_value=50, max_value=250, value=170)
+    weight = st.number_input("Weight (kg)", min_value=10, max_value=200, value=70)
+    activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
+    dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan", "Keto", "Other"])
 
     if st.button("Register"):
         if not all([name, email, phone, new_username, new_password]):
@@ -74,8 +51,13 @@ def register_page():
                 "email": email,
                 "phone": phone,
                 "password": new_password,
+                "age": age,
+                "height": height,
+                "weight": weight,
+                "activity_level": activity_level,
+                "dietary_preference": dietary_preference,
                 "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
-                "diet_plan": {}  # Empty diet plan initially
+                "diet_plan": {}
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
@@ -104,22 +86,8 @@ def login_page():
 
     if st.button("Create Account"):
         st.session_state['page'] = "register"
-# User details input
-    st.subheader("Enter Your Details")
-    age = st.number_input("Age", min_value=1, max_value=100, value=25)
-    height = st.number_input("Height (cm)", min_value=50, max_value=250, value=170)
-    weight = st.number_input("Weight (kg)", min_value=10, max_value=200, value=70)
-    activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
-    dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan", "Keto", "Other"])
-    
-    # Diet Plan Selection
-    st.subheader("Select Your Diet Plan")
-    diet_plan = st.selectbox("", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-    
-    if st.button("Save Diet Plan"):
-        st.success(f"Your {diet_plan} diet plan has been saved!")
-    
-# Main App: Diet Plan and Meal Saving
+
+# Main App: Display and Update User Details
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
 
@@ -130,32 +98,27 @@ def main_app():
 
     user_data = load_user_data()
     username = st.session_state['username']
+    user = user_data[username]
+
+    st.markdown(f"*Welcome, {user['name']}!*")
     
-    st.markdown(f"*Welcome, {user_data[username]['name']}!*")
-
-    # Select diet plan
-    diet_choice = st.selectbox("Select your diet plan", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-    if diet_choice:
-        user_data[username]['diet_plan'] = diet_plans[diet_choice]
-        save_user_data(user_data)
-        st.success(f"Your {diet_choice} diet plan has been saved!")
-
-    # Display last meal
-    last_meal = user_data[username].get("last_meal", {"Breakfast": "No record", "Lunch": "No record", "Dinner": "No record"})
-    st.markdown("*Last Recorded Meals:*")
-    st.markdown(f"- *Breakfast:* {last_meal['Breakfast']}")
-    st.markdown(f"- *Lunch:* {last_meal['Lunch']}")
-    st.markdown(f"- *Dinner:* {last_meal['Dinner']}")
-
-    # Meal Input
-    breakfast = st.text_input("Enter your Breakfast details")
-    lunch = st.text_input("Enter your Lunch details")
-    dinner = st.text_input("Enter your Dinner details")
+    st.subheader("Your Details")
+    age = st.number_input("Age", min_value=1, max_value=100, value=user["age"])
+    height = st.number_input("Height (cm)", min_value=50, max_value=250, value=user["height"])
+    weight = st.number_input("Weight (kg)", min_value=10, max_value=200, value=user["weight"])
+    activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"], index=["Sedentary", "Lightly Active", "Moderately Active", "Very Active"].index(user["activity_level"]))
+    dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan", "Keto", "Other"], index=["Vegetarian", "Non-Vegetarian", "Vegan", "Keto", "Other"].index(user["dietary_preference"]))
     
-    if st.button("Save Meals"):
-        user_data[username]["last_meal"] = {"Breakfast": breakfast, "Lunch": lunch, "Dinner": dinner}
+    if st.button("Update Details"):
+        user_data[username].update({
+            "age": age,
+            "height": height,
+            "weight": weight,
+            "activity_level": activity_level,
+            "dietary_preference": dietary_preference
+        })
         save_user_data(user_data)
-        st.success("Meals saved successfully!")
+        st.success("Details updated successfully!")
 
 # Main function to control the app navigation
 def main():
@@ -170,4 +133,4 @@ def main():
         main_app()
 
 if __name__ == "__main__":
-    main()  # Ensure this line is indented properly
+    main()
