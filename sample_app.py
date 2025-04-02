@@ -156,4 +156,4 @@ def main():
         main_app()
 
 if __name__ == "__main__":
-
+    main()  # Ensure this line is indented properly
