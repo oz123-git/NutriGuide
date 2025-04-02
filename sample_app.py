@@ -17,6 +17,7 @@ def save_user_data(data):
     with open(db_file, "w") as file:
         json.dump(data, file, indent=4)
 
+# Define diet plans
 diet_plans = {
     "Weight Loss": {
         "Day 1": {"Breakfast": "Poha", "Lunch": "Dal khichdi", "Dinner": "Vegetable soup"},
@@ -50,65 +51,62 @@ diet_plans = {
 # Register Page
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
+    st.image("image/nutrition_register.jpg.webp")
+
     name = st.text_input("Name")
-    email = st.text_input("Email ID")
-    age = st.text_input("Age")
-    height = st.text_input("Height (cm)")
-    weight = st.text_input("Weight (kg)")
+    age = st.number_input("Age", min_value=1, max_value=100, step=1)
+    gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+    height = st.number_input("Height (cm)", min_value=50, max_value=250, step=1)
+    weight = st.number_input("Weight (kg)", min_value=10, max_value=200, step=1)
     activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
     health_goal = st.selectbox("Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-    dietary_preference = st.text_input("Dietary Preferences (e.g. Vegetarian, Vegan, etc.)")
-    medical_conditions = st.text_input("Medical Conditions (if any)")
-    allergies = st.text_input("Allergies (if any)")
-    eating_schedule = st.text_input("Eating Schedule (e.g. 3 meals, 5 small meals, etc.)")
+    email = st.text_input("Email ID")
+    phone = st.text_input("Phone Number")
     new_username = st.text_input("Create Username")
     new_password = st.text_input("Create Password", type='password')
 
     if st.button("Register"):
-        if not all([name, email, age, height, weight, new_username, new_password]):
+        if not all([name, email, phone, new_username, new_password]):
             st.error("All fields are required!")
             return
         
         user_data = load_user_data()
-        
+
         if new_username in user_data:
             st.error("Username already exists. Please choose another.")
         else:
             user_data[new_username] = {
                 "name": name,
-                "email": email,
                 "age": age,
+                "gender": gender,
                 "height": height,
                 "weight": weight,
                 "activity_level": activity_level,
                 "health_goal": health_goal,
-                "dietary_preference": dietary_preference,
-                "medical_conditions": medical_conditions,
-                "allergies": allergies,
-                "eating_schedule": eating_schedule,
+                "email": email,
+                "phone": phone,
                 "password": new_password,
+                "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
                 "diet_plan": diet_plans[health_goal]
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
             st.session_state['page'] = "login"
 
-# Display Group Members
-def display_team():
-    st.markdown("## TechSpark Group Members")
-    st.markdown("- **Dipak Walunj (Roll No. 60)**")
-    st.markdown("- **Divyank Wani (Roll No. 61)**")
-    st.markdown("- **Omkar Zinjurde (Roll No. 63)**")
-    st.markdown("- **Sakshi Ughade (Roll No. 73)**")
+    if st.button("Back to Login"):
+        st.session_state['page'] = "login"
 
+# Main function to control the app navigation
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'login'
 
-    if st.session_state['page'] == 'register':
+    if st.session_state['page'] == 'login':
+        login_page()
+    elif st.session_state['page'] == 'register':
         register_page()
-    else:
-        display_team()
+    elif st.session_state['page'] == 'main':
+        main_app()
 
 if __name__ == "__main__":
     main()
