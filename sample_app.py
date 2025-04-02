@@ -85,7 +85,7 @@ def register_page():
             st.success("Account created successfully! Please login.")
             st.session_state['page'] = "login"
 
-# Login Page
+# Login Page with Account Creation Button
 def login_page():
     st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
     
@@ -102,7 +102,11 @@ def login_page():
         else:
             st.error("Invalid credentials. Please try again.")
 
-# Main App: Diet Plan and Meal Saving
+    # Add "Create Account" button
+    if st.button("Create Account"):
+        st.session_state['page'] = "register"
+
+# Main App: Diet Plan and Meal Tracking
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
 
@@ -155,7 +159,7 @@ def main_app():
         save_user_data(user_data)
         st.success("Meals saved successfully!")
 
-# Main function to control the app navigation
+# Main function controlling app navigation
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'login'
