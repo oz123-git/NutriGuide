@@ -48,6 +48,23 @@ diet_plans = {
     }
 }
 
+# Login Page
+def login_page():
+    st.markdown("<h1 style='color: #4CAF50;'>Login</h1>", unsafe_allow_html=True)
+    username = st.text_input("Username")
+    password = st.text_input("Password", type='password')
+    
+    if st.button("Login"):
+        user_data = load_user_data()
+        if username in user_data and user_data[username]["password"] == password:
+            st.session_state['page'] = "main"
+            st.session_state['username'] = username
+        else:
+            st.error("Invalid username or password")
+    
+    if st.button("Create Account"):
+        st.session_state['page'] = "register"
+
 # Register Page
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
@@ -106,7 +123,7 @@ def main():
     elif st.session_state['page'] == 'register':
         register_page()
     elif st.session_state['page'] == 'main':
-        main_app()
+        st.write("Welcome to AI Nutrition App")
 
 if __name__ == "__main__":
     main()
