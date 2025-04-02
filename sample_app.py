@@ -104,7 +104,21 @@ def login_page():
 
     if st.button("Create Account"):
         st.session_state['page'] = "register"
-
+# User details input
+    st.subheader("Enter Your Details")
+    age = st.number_input("Age", min_value=1, max_value=100, value=25)
+    height = st.number_input("Height (cm)", min_value=50, max_value=250, value=170)
+    weight = st.number_input("Weight (kg)", min_value=10, max_value=200, value=70)
+    activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
+    dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Vegan", "Keto", "Other"])
+    
+    # Diet Plan Selection
+    st.subheader("Select Your Diet Plan")
+    diet_plan = st.selectbox("", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
+    
+    if st.button("Save Diet Plan"):
+        st.success(f"Your {diet_plan} diet plan has been saved!")
+    
 # Main App: Diet Plan and Meal Saving
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
