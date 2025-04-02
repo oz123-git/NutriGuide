@@ -48,12 +48,35 @@ diet_plans = {
     }
 }
 
+# Login Page
+def login_page():
+    st.markdown("<h1 style='color: #4CAF50;'>Login</h1>", unsafe_allow_html=True)
+    username = st.text_input("Username")
+    password = st.text_input("Password", type='password')
+    
+    if st.button("Login"):
+        user_data = load_user_data()
+        if username in user_data and user_data[username]["password"] == password:
+            st.session_state['page'] = "main"
+            st.session_state['username'] = username
+        else:
+            st.error("Invalid username or password")
+    
+    if st.button("Create Account"):
+        st.session_state['page'] = "register"
+
 # Register Page
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_register.jpg.webp")
 
     name = st.text_input("Name")
+    age = st.number_input("Age", min_value=1, max_value=100, step=1)
+    gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+    height = st.number_input("Height (cm)", min_value=50, max_value=250, step=1)
+    weight = st.number_input("Weight (kg)", min_value=10, max_value=200, step=1)
+    activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
+    health_goal = st.selectbox("Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
     email = st.text_input("Email ID")
     phone = st.text_input("Phone Number")
     new_username = st.text_input("Create Username")
@@ -65,95 +88,50 @@ def register_page():
             return
         
         user_data = load_user_data()
-
         if new_username in user_data:
             st.error("Username already exists. Please choose another.")
         else:
             user_data[new_username] = {
                 "name": name,
-                "email": email,
-                "phone": phone,
+                "age": age,
+                "gender": gender,
+                "height": height,
+                "weight": weight,
+                "activity_level": activity_level,
+                "health_goal": health_goal,
                 "password": new_password,
-                "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
-                "diet_plan": {}  # Empty diet plan initially
+                "diet_plan": diet_plans.get(health_goal, {})
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
             st.session_state['page'] = "login"
 
-    if st.button("Back to Login"):
-        st.session_state['page'] = "login"
-
-# Login Page
-def login_page():
-    st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
-    st.image("image/nutrition_login.jpg.webp")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type='password')
-
-    if st.button("Login"):
-        user_data = load_user_data()
-        if username in user_data and user_data[username]["password"] == password:
-            st.success(f"Welcome back, {user_data[username]['name']}!")
-            st.session_state['authenticated'] = True
-            st.session_state['username'] = username
-            st.session_state['page'] = "main"
-        else:
-            st.error("Invalid credentials. Please try again.")
-
-    if st.button("Create Account"):
-        st.session_state['page'] = "register"
-
-# Main App: Diet Plan and Meal Saving
-def main_app():
-    st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
-
-    if st.button("Logout"):
-        st.session_state['authenticated'] = False
-        st.session_state['page'] = "login"
-        return
-
+# Main Dashboard
+def main_dashboard():
+    st.write(f"Welcome {st.session_state.get('username', 'User')} to AI Nutrition App")
     user_data = load_user_data()
-    username = st.session_state['username']
-    
-    st.markdown(f"*Welcome, {user_data[username]['name']}!*")
+    username = st.session_state.get('username')
+    if username in user_data:
+        user_info = user_data[username]
+        st.write(f"**Age:** {user_info['age']} | **Height:** {user_info['height']} cm | **Weight:** {user_info['weight']} kg")
+        st.write(f"**Activity Level:** {user_info['activity_level']} | **Health Goal:** {user_info['health_goal']}")
+        st.write("### Your Diet Plan")
+        diet_plan = user_info.get("diet_plan", {})
+        for day, meals in diet_plan.items():
+            st.write(f"**{day}**")
+            for meal, item in meals.items():
+                st.write(f"- {meal}: {item}")
 
-    # Select diet plan
-    diet_choice = st.selectbox("Select your diet plan", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-    if diet_choice:
-        user_data[username]['diet_plan'] = diet_plans[diet_choice]
-        save_user_data(user_data)
-        st.success(f"Your {diet_choice} diet plan has been saved!")
-
-    # Display last meal
-    last_meal = user_data[username].get("last_meal", {"Breakfast": "No record", "Lunch": "No record", "Dinner": "No record"})
-    st.markdown("*Last Recorded Meals:*")
-    st.markdown(f"- *Breakfast:* {last_meal['Breakfast']}")
-    st.markdown(f"- *Lunch:* {last_meal['Lunch']}")
-    st.markdown(f"- *Dinner:* {last_meal['Dinner']}")
-
-    # Meal Input
-    breakfast = st.text_input("Enter your Breakfast details")
-    lunch = st.text_input("Enter your Lunch details")
-    dinner = st.text_input("Enter your Dinner details")
-    
-    if st.button("Save Meals"):
-        user_data[username]["last_meal"] = {"Breakfast": breakfast, "Lunch": lunch, "Dinner": dinner}
-        save_user_data(user_data)
-        st.success("Meals saved successfully!")
-
-# Main function to control the app navigation
+# Main function
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'login'
-
     if st.session_state['page'] == 'login':
         login_page()
     elif st.session_state['page'] == 'register':
         register_page()
     elif st.session_state['page'] == 'main':
-        main_app()
+        main_dashboard()
 
 if __name__ == "__main__":
     main()
