@@ -17,6 +17,7 @@ def save_user_data(data):
     with open(db_file, "w") as file:
         json.dump(data, file, indent=4)
 
+# Define diet plans
 diet_plans = {
     "Weight Loss": {
         "Day 1": {"Breakfast": "Poha", "Lunch": "Dal khichdi", "Dinner": "Vegetable soup"},
@@ -47,6 +48,7 @@ diet_plans = {
     }
 }
 
+# Register Page
 def register_page():
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_register.jpg.webp")
@@ -56,15 +58,9 @@ def register_page():
     phone = st.text_input("Phone Number")
     new_username = st.text_input("Create Username")
     new_password = st.text_input("Create Password", type='password')
-    
-    # New fields for additional user data
-    age = st.number_input("Age", min_value=0)
-    weight = st.number_input("Weight (kg)", min_value=0)
-    height = st.number_input("Height (cm)", min_value=0)
-    activity_level = st.selectbox("Activity Level", ["Sedentary", "Light", "Moderate", "Active", "Very Active"])
 
     if st.button("Register"):
-        if not all([name, email, phone, new_username, new_password, age, weight, height, activity_level]):
+        if not all([name, email, phone, new_username, new_password]):
             st.error("All fields are required!")
             return
         
@@ -78,12 +74,8 @@ def register_page():
                 "email": email,
                 "phone": phone,
                 "password": new_password,
-                "age": age,
-                "weight": weight,
-                "height": height,
-                "activity_level": activity_level,
                 "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
-                "diet_plan": diet_plans["Weight Loss"]  # Set a default diet plan, or personalize based on age, weight, etc.
+                "diet_plan": {}  # Empty diet plan initially
             }
             save_user_data(user_data)
             st.success("Account created successfully! Please login.")
@@ -92,6 +84,7 @@ def register_page():
     if st.button("Back to Login"):
         st.session_state['page'] = "login"
 
+# Login Page
 def login_page():
     st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
     st.image("image/nutrition_login.jpg.webp")
@@ -112,31 +105,35 @@ def login_page():
     if st.button("Create Account"):
         st.session_state['page'] = "register"
 
+# Main App: Diet Plan and Meal Saving
 def main_app():
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
-    
+
     if st.button("Logout"):
         st.session_state['authenticated'] = False
         st.session_state['page'] = "login"
         return
-    
+
     user_data = load_user_data()
     username = st.session_state['username']
     
-    st.markdown(f"**Welcome, {user_data[username]['name']}!**")
+    st.markdown(f"*Welcome, {user_data[username]['name']}!*")
 
-    # Display user data
-    st.markdown(f"**Age:** {user_data[username]['age']}")
-    st.markdown(f"**Weight:** {user_data[username]['weight']} kg")
-    st.markdown(f"**Height:** {user_data[username]['height']} cm")
-    st.markdown(f"**Activity Level:** {user_data[username]['activity_level']}")
+    # Select diet plan
+    diet_choice = st.selectbox("Select your diet plan", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
+    if diet_choice:
+        user_data[username]['diet_plan'] = diet_plans[diet_choice]
+        save_user_data(user_data)
+        st.success(f"Your {diet_choice} diet plan has been saved!")
 
+    # Display last meal
     last_meal = user_data[username].get("last_meal", {"Breakfast": "No record", "Lunch": "No record", "Dinner": "No record"})
-    st.markdown("**Last Recorded Meals:**")
-    st.markdown(f"- **Breakfast:** {last_meal['Breakfast']}")
-    st.markdown(f"- **Lunch:** {last_meal['Lunch']}")
-    st.markdown(f"- **Dinner:** {last_meal['Dinner']}")
+    st.markdown("*Last Recorded Meals:*")
+    st.markdown(f"- *Breakfast:* {last_meal['Breakfast']}")
+    st.markdown(f"- *Lunch:* {last_meal['Lunch']}")
+    st.markdown(f"- *Dinner:* {last_meal['Dinner']}")
 
+    # Meal Input
     breakfast = st.text_input("Enter your Breakfast details")
     lunch = st.text_input("Enter your Lunch details")
     dinner = st.text_input("Enter your Dinner details")
@@ -145,3 +142,18 @@ def main_app():
         user_data[username]["last_meal"] = {"Breakfast": breakfast, "Lunch": lunch, "Dinner": dinner}
         save_user_data(user_data)
         st.success("Meals saved successfully!")
+
+# Main function to control the app navigation
+def main():
+    if 'page' not in st.session_state:
+        st.session_state['page'] = 'login'
+
+    if st.session_state['page'] == 'login':
+        login_page()
+    elif st.session_state['page'] == 'register':
+        register_page()
+    elif st.session_state['page'] == 'main':
+        main_app()
+
+if _name_ == "_main_":
+    main()
