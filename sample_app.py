@@ -28,19 +28,28 @@ def calculate_bmr(weight, height, age, activity_level):
     }
     return bmr * activity_multiplier.get(activity_level, 1.2)
 
-# Diet plans
+# Full 7-Day Diet Plans (Indian, beef-free)
 diet_plans = {
     "Weight Loss": {
-        "Day 1": {"Breakfast": "Poha", "Lunch": "Dal khichdi", "Dinner": "Vegetable soup"},
-        "Day 2": {"Breakfast": "Oatmeal", "Lunch": "Quinoa salad", "Dinner": "Grilled chicken"},
+        f"Day {i+1}": {
+            "Breakfast": ["Poha", "Oatmeal", "Upma", "Idli & Sambhar", "Vegetable Dalia", "Smoothie Bowl", "Moong Dal Chilla"][i],
+            "Lunch": ["Dal Khichdi", "Quinoa Salad", "Mixed Veg Curry", "Tofu Salad", "Brown Rice & Dal", "Grilled Veg Wrap", "Vegetable Pulao"][i],
+            "Dinner": ["Vegetable Soup", "Grilled Chicken", "Moong Dal Soup", "Paneer Tikka", "Lentil Soup", "Veg Stew", "Cabbage Sabzi & Roti"][i],
+        } for i in range(7)
     },
     "Balanced Nutrition": {
-        "Day 1": {"Breakfast": "Pancakes", "Lunch": "Rice & Dal", "Dinner": "Grilled Chicken"},
-        "Day 2": {"Breakfast": "Smoothie", "Lunch": "Lentil Soup", "Dinner": "Fish Curry"},
+        f"Day {i+1}": {
+            "Breakfast": ["Pancakes", "Smoothie", "Paratha & Curd", "Sprouts Chat", "Dosa", "Besan Chilla", "Boiled Eggs & Toast"][i],
+            "Lunch": ["Rice & Dal", "Lentil Soup", "Chicken Curry", "Rajma Chawal", "Vegetable Korma", "Egg Curry & Rice", "Paneer Bhurji & Chapati"][i],
+            "Dinner": ["Grilled Chicken", "Fish Curry", "Vegetable Biryani", "Tofu Curry", "Stuffed Roti", "Mixed Dal", "Sambhar & Idli"][i],
+        } for i in range(7)
     },
     "Muscle Gain": {
-        "Day 1": {"Breakfast": "Eggs & Toast", "Lunch": "Chicken & Quinoa", "Dinner": "Salmon & Potatoes"},
-        "Day 2": {"Breakfast": "Protein Shake", "Lunch": "Lentil Soup", "Dinner": "Grilled Steak"},
+        f"Day {i+1}": {
+            "Breakfast": ["Eggs & Toast", "Protein Shake", "Paneer Paratha", "Peanut Butter Sandwich", "Cheese Omelette", "Banana Shake", "Idli Sambhar"][i],
+            "Lunch": ["Chicken & Quinoa", "Lentil Soup", "Rajma & Rice", "Soybean Curry with Rice", "Tofu with Brown Rice", "Paneer Bhurji with Roti", "Egg Biryani"][i],
+            "Dinner": ["Salmon & Potatoes", "Grilled Chicken", "Egg Curry", "Quinoa with Vegetables", "Chicken Pasta", "Grilled Fish with Veggies", "Mixed Dal & Chapati"][i],
+        } for i in range(7)
     }
 }
 
@@ -58,9 +67,14 @@ def register_page():
     height = st.number_input("Height (cm)", min_value=50, max_value=250)
     weight = st.number_input("Weight (kg)", min_value=10, max_value=300)
     activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
+    dietary_pref = st.selectbox("Dietary Preference", ["Vegetarian", "Non-Vegetarian", "Eggetarian"])
+    medical_conditions = st.text_input("Any Medical Conditions")
+    allergies = st.text_input("Allergies")
+    sleep_pattern = st.selectbox("Sleep Pattern", ["Less than 6 hrs", "6-8 hrs", "More than 8 hrs"])
+    stress_level = st.selectbox("Stress Level", ["Low", "Moderate", "High"])
 
     if st.button("Register"):
-        if not all([name, email, phone, new_username, new_password, age, height, weight, activity_level]):
+        if not all([name, email, phone, new_username, new_password]):
             st.error("All fields are required!")
             return
 
@@ -78,8 +92,13 @@ def register_page():
                 "height": height,
                 "weight": weight,
                 "activity_level": activity_level,
-                "water_intake": 0,  # New hydration tracking
-                "weight_history": [],  # Weight tracking over time
+                "dietary_pref": dietary_pref,
+                "medical_conditions": medical_conditions,
+                "allergies": allergies,
+                "sleep_pattern": sleep_pattern,
+                "stress_level": stress_level,
+                "water_intake": 0,
+                "weight_history": [],
                 "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
                 "diet_plan": {}
             }
@@ -157,7 +176,12 @@ def main_app():
         save_user_data(user_data)
         st.success("Meals saved successfully!")
 
-# Main function controlling app navigation
+    # Display group and college name in different color
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #9C27B0;'>Group: TechSpark | College: Amrutvahini College of Engineering, Sangamner</p>", unsafe_allow_html=True)
+
+# Main function
+
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'login'
