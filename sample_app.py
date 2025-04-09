@@ -1,18 +1,12 @@
-# AI Nutrition App (Full Streamlit Code)
-
 import streamlit as st
 import json
 import os
-from datetime import datetime
-import random
 
-# File paths
+# Paths
 image_path = os.getcwd()
 db_file = os.path.join(image_path, "user_data.json")
-login_image = os.path.join("image", "nutrition_login.jpg.webp")
-register_image = os.path.join("image", "nutrition_register.jpg.webp")
 
-# Load and Save JSON user data
+# Load user data from JSON file
 def load_user_data():
     try:
         with open(db_file, "r") as file:
@@ -21,175 +15,209 @@ def load_user_data():
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
+# Save user data to JSON file
 def save_user_data(data):
     with open(db_file, "w") as file:
         json.dump(data, file, indent=4)
 
-# BMR calculator (Mifflin-St Jeor)
-def calculate_bmr(weight, height, age, gender, activity_level):
-    gender_factor = 5 if gender == "Male" else -161
-    bmr = 10 * weight + 6.25 * height - 5 * age + gender_factor
+# Calculate BMR using Mifflin-St Jeor Equation
+def calculate_bmr(weight, height, age, activity_level):
+    bmr = 10 * weight + 6.25 * height - 5 * age + 5
     activity_multiplier = {
         "Sedentary": 1.2,
         "Lightly Active": 1.375,
         "Moderately Active": 1.55,
         "Very Active": 1.725
     }
-    return round(bmr * activity_multiplier.get(activity_level, 1.2), 2)
+    return bmr * activity_multiplier.get(activity_level, 1.2)
 
-# Streamlit UI
-st.set_page_config(page_title="AI Nutrition App", layout="centered")
+# Unique Indian 7-Day Diet Plans (no repeating food items)
+diet_plans = {
+    "Weight Loss": {
+        "Day 1": {"Breakfast": "Oats with skim milk", "Lunch": "Roti with lauki sabzi", "Dinner": "Vegetable soup and salad"},
+        "Day 2": {"Breakfast": "Poha with sprouts", "Lunch": "Brown rice with dal", "Dinner": "Grilled paneer with vegetables"},
+        "Day 3": {"Breakfast": "Ragi dosa", "Lunch": "Multigrain roti with chole", "Dinner": "Moong dal khichdi with curd"},
+        "Day 4": {"Breakfast": "Fruit smoothie", "Lunch": "Quinoa with vegetables", "Dinner": "Palak soup and salad"},
+        "Day 5": {"Breakfast": "Upma with peanuts", "Lunch": "Roti with mixed veg", "Dinner": "Vegetable stew with brown bread"},
+        "Day 6": {"Breakfast": "Idli with chutney", "Lunch": "Barley khichdi", "Dinner": "Grilled tofu and steamed veg"},
+        "Day 7": {"Breakfast": "Besan chilla", "Lunch": "Rice with sambhar", "Dinner": "Lentil soup with salad"},
+    },
+    "Balanced Nutrition": {
+        "Day 1": {"Breakfast": "Idli with sambar", "Lunch": "Rice with dal", "Dinner": "Vegetable pulao"},
+        "Day 2": {"Breakfast": "Chapati with bhaji", "Lunch": "Roti with paneer", "Dinner": "Mixed vegetable curry with rice"},
+        "Day 3": {"Breakfast": "Cornflakes with milk", "Lunch": "Khichdi with papad", "Dinner": "Chapati with bhindi"},
+        "Day 4": {"Breakfast": "Fruit salad and curd", "Lunch": "Veg pulao", "Dinner": "Dal and rice"},
+        "Day 5": {"Breakfast": "Upma with chutney", "Lunch": "Paratha with curd", "Dinner": "Stuffed capsicum with rice"},
+        "Day 6": {"Breakfast": "Multigrain toast", "Lunch": "Rajma with roti", "Dinner": "Vegetable noodles"},
+        "Day 7": {"Breakfast": "Vegetable sandwich", "Lunch": "Pulao with raita", "Dinner": "Chapati with mix veg"},
+    },
+    "Muscle Gain": {
+        "Day 1": {"Breakfast": "Boiled eggs with toast", "Lunch": "Chicken curry with rice", "Dinner": "Paneer with roti"},
+        "Day 2": {"Breakfast": "Protein smoothie", "Lunch": "Fish curry with rice", "Dinner": "Egg bhurji with paratha"},
+        "Day 3": {"Breakfast": "Sprouted moong salad", "Lunch": "Rajma rice", "Dinner": "Grilled chicken with vegetables"},
+        "Day 4": {"Breakfast": "Paneer sandwich", "Lunch": "Stuffed paratha with curd", "Dinner": "Chana masala with rice"},
+        "Day 5": {"Breakfast": "Oats with whey protein", "Lunch": "Mixed veg rice", "Dinner": "Soyabean curry with roti"},
+        "Day 6": {"Breakfast": "Boiled chana chaat", "Lunch": "Egg curry with rice", "Dinner": "Tofu stir fry with noodles"},
+        "Day 7": {"Breakfast": "Wheat flakes with milk", "Lunch": "Paneer tikka with roti", "Dinner": "Dal makhani with rice"},
+    }
+}
 
-# App States
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-if "current_user" not in st.session_state:
-    st.session_state.current_user = None
+# Register Page
+def register_page():
+    st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
 
-user_db = load_user_data()
-
-# Authentication UI
-def show_login():
-    st.image(login_image, use_column_width=True)
-    st.title("Login")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login"):
-        if username in user_db and user_db[username]["password"] == password:
-            st.session_state.authenticated = True
-            st.session_state.current_user = username
-            st.success("Logged in successfully!")
-        else:
-            st.error("Invalid username or password")
-
-    st.markdown("<div style='text-align:right;'>Don't have an account? 👉 [Create Account](#register)</div>", unsafe_allow_html=True)
-
-def show_register():
-    st.image(register_image, use_column_width=True)
-    st.title("Register")
-    username = st.text_input("Create Username")
-    password = st.text_input("Create Password", type="password")
+    name = st.text_input("Name")
+    email = st.text_input("Email ID")
+    phone = st.text_input("Phone Number")
+    new_username = st.text_input("Create Username")
+    new_password = st.text_input("Create Password", type='password')
 
     if st.button("Register"):
-        if username in user_db:
-            st.error("Username already exists")
+        if not all([name, email, phone, new_username, new_password]):
+            st.error("All fields are required!")
+            return
+
+        user_data = load_user_data()
+
+        if new_username in user_data:
+            st.error("Username already exists. Please choose another.")
         else:
-            user_db[username] = {"password": password, "profile": {}, "plan": {}}
-            save_user_data(user_db)
-            st.success("Account created! Please log in.")
-
-# Diet Plan Generator with unique meals
-
-def get_diet_plan(goal, diet_type):
-    plan_bank = {
-        "Weight Loss": {
-            "Vegetarian": [
-                "Oats with fruits", "Roti with sabzi", "Moong dal khichdi", "Poha", "Brown rice with dal", "Vegetable soup with toast",
-                "Upma", "Paneer bhurji", "Mixed veg curry", "Idli with chutney", "Lentil salad", "Veg pulao", "Fruit smoothie",
-                "Vegetable khichdi", "Dalia with veggies", "Cornflakes with milk", "Stuffed paratha", "Tofu curry with roti",
-                "Besan chilla", "Veg sandwich", "Spinach soup with toast"
-            ],
-            "Non-Vegetarian": [
-                "Boiled eggs with toast", "Grilled chicken salad", "Fish curry with brown rice", "Egg curry with rice", "Chicken soup",
-                "Vegetable omelette", "Grilled chicken wrap", "Fish tikka", "Tuna salad", "Egg bhurji with roti", "Smoothie with nuts",
-                "Chicken rice bowl", "Grilled fish with veggies", "Egg fried rice", "Boiled chicken with veggies", "Multigrain toast",
-                "Chicken curry with roti", "Tandoori fish", "Egg curry + oats", "Chicken tikka + salad", "Tuna sandwich"
-            ]
-        },
-        "Balanced Nutrition": {
-            "Vegetarian": [
-                "Milk + paratha", "Dal chawal + salad", "Veg curry + roti", "Upma + milk", "Chole with rice", "Paneer sabzi + roti",
-                "Smoothie + toast", "Rajma with brown rice", "Dalia with curd", "Idli + sambhar", "Veg paratha + curd", "Kadhi + rice",
-                "Cornflakes + fruit", "Lauki sabzi + roti", "Khichdi with ghee", "Poha + sprouts", "Palak dal + rice", "Paneer tikka with salad",
-                "Multigrain sandwich", "Veg pulao + raita", "Mix veg with chapati"
-            ],
-            "Non-Vegetarian": [
-                "Boiled eggs + bread", "Chicken curry + rice", "Fish curry + roti", "Oats + fruits", "Egg bhurji + paratha", "Chicken rice",
-                "Toast + smoothie", "Grilled fish + salad", "Egg curry + rice", "Poha + milk", "Chicken wrap", "Grilled chicken with chapati",
-                "Upma + juice", "Tuna salad", "Boiled eggs + veg soup", "Idli + chutney", "Fish biryani", "Chicken tikka",
-                "Fruit + toast", "Boiled eggs + roti", "Chicken stew + rice"
-            ]
-        },
-        "Muscle Gain": {
-            "Vegetarian": [
-                "Paneer paratha + milk", "Dal rice + paneer", "Chole with roti", "Oats with peanut butter", "Rajma + rice", "Tofu bhurji with bread",
-                "Banana shake + roti", "Soya chunks + pulao", "Veg biryani", "Dalia + dry fruits", "Khichdi + curd", "Paneer butter masala + roti",
-                "Boiled chana + poha", "Mixed dal + roti", "Palak paneer + rice", "Fruit + oats", "Chole bhature", "Stuffed paratha + curd",
-                "Multigrain toast + milk", "Paneer tikka", "Matar paneer + roti"
-            ],
-            "Non-Vegetarian": [
-                "Eggs + toast", "Chicken curry + rice", "Fish + veggies", "Smoothie + boiled eggs", "Grilled chicken + roti", "Fish pulao",
-                "Oats + omelet", "Boiled chicken + rice", "Egg curry + chapati", "Idli + sambhar", "Chicken wrap", "Grilled fish + curd",
-                "Paratha + eggs", "Tandoori chicken", "Fish tikka + salad", "Cornflakes + milk", "Chicken biryani", "Boiled eggs + soup",
-                "Fruit + toast", "Egg roll", "Chicken stew"
-            ]
-        }
-    }
-
-    meals = random.sample(plan_bank[goal][diet_type], 21)
-    return [(meals[i], meals[i+1], meals[i+2]) for i in range(0, 21, 3)]
-
-# Main App (after login)
-def show_dashboard():
-    st.title("Personalized Indian Diet Plan")
-    user = st.session_state.current_user
-
-    if not user_db[user].get("profile"):
-        st.subheader("Enter Your Health Details")
-        age = st.number_input("Age", 10, 100)
-        gender = st.selectbox("Gender", ["Male", "Female"])
-        height = st.number_input("Height (cm)", 100, 250)
-        weight = st.number_input("Weight (kg)", 30, 200)
-        activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
-        goal = st.selectbox("Health Goal", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
-        diet_type = st.radio("Diet Preference", ["Vegetarian", "Non-Vegetarian"])
-        allergies = st.text_input("Any Allergies (comma-separated)")
-
-        if st.button("Generate Diet Plan"):
-            bmr = calculate_bmr(weight, height, age, gender, activity_level)
-            plan = get_diet_plan(goal, diet_type)
-            profile = {
-                "age": age, "gender": gender, "height": height, "weight": weight,
-                "activity_level": activity_level, "goal": goal,
-                "diet": diet_type, "allergies": allergies, "bmr": bmr
+            user_data[new_username] = {
+                "name": name,
+                "email": email,
+                "phone": phone,
+                "password": new_password,
+                "details_entered": False,
+                "water_intake": 0.0,
+                "weight_history": [],
+                "last_meal": {"Breakfast": "", "Lunch": "", "Dinner": ""},
+                "diet_plan": {}
             }
-            user_db[user]["profile"] = profile
-            user_db[user]["plan"] = plan
-            save_user_data(user_db)
-            st.success("Diet plan generated and saved successfully!")
+            save_user_data(user_data)
+            st.success("Account created successfully! Please login.")
+            st.session_state['page'] = "login"
 
-    else:
-        profile = user_db[user]["profile"]
-        plan = user_db[user].get("plan", [])
-        st.subheader("Welcome back! Here's your profile")
-        st.write(f"**Goal:** {profile['goal']} | **Calories/day:** {profile['bmr']} kcal")
-        st.markdown(f"💧 Recommended Water: {round(profile['weight'] * 0.033, 2)} liters")
+# Login Page
+def login_page():
+    st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
 
-        if plan:
-            st.subheader("Your 7-Day Diet Plan")
-            for i, (b, l, d) in enumerate(plan):
-                st.markdown(f"### Day {i+1}")
-                st.write(f"**Breakfast:** {b}")
-                st.write(f"**Lunch:** {l}")
-                st.write(f"**Dinner:** {d}")
-                st.markdown("---")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type='password')
 
-    # Footer
+    if st.button("Login"):
+        user_data = load_user_data()
+        if username in user_data and user_data[username]["password"] == password:
+            st.success(f"Welcome back, {user_data[username]['name']}!")
+            st.session_state['authenticated'] = True
+            st.session_state['username'] = username
+            st.session_state['page'] = "main"
+        else:
+            st.error("Invalid credentials. Please try again.")
+
+    if st.button("Create Account"):
+        st.session_state['page'] = "register"
+
+# Main App After Login
+def main_app():
+    st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
+
+    if st.button("Logout"):
+        st.session_state['authenticated'] = False
+        st.session_state['page'] = "login"
+        return
+
+    user_data = load_user_data()
+    username = st.session_state['username']
+
+    if not user_data[username].get("details_entered", False):
+        st.subheader("Please complete your profile:")
+        age = st.number_input("Age", min_value=1, max_value=120)
+        height = st.number_input("Height (cm)", min_value=50, max_value=250)
+        weight = st.number_input("Weight (kg)", min_value=10, max_value=300)
+        activity_level = st.selectbox("Activity Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
+
+        if st.button("Save Info"):
+            user_data[username].update({
+                "age": age,
+                "height": height,
+                "weight": weight,
+                "activity_level": activity_level,
+                "details_entered": True
+            })
+            save_user_data(user_data)
+            st.success("Profile updated successfully!")
+        return
+
+    weight = user_data[username]["weight"]
+    height = user_data[username]["height"]
+    age = user_data[username]["age"]
+    activity_level = user_data[username]["activity_level"]
+
+    tdee = calculate_bmr(weight, height, age, activity_level)
+    st.markdown(f"*Estimated Daily Caloric Needs:* {round(tdee)} kcal")
+
+    water_intake = float(user_data[username].get("water_intake", 0.0))
+    water_input = st.number_input("Water Intake (Liters)", min_value=0.0, max_value=10.0, value=water_intake, step=0.1)
+    user_data[username]["water_intake"] = water_input
+
+    new_weight = st.number_input("Update Weight (kg)", min_value=10, max_value=300, value=weight)
+    if st.button("Save Weight"):
+        if "weight_history" not in user_data[username]:
+            user_data[username]["weight_history"] = []
+        user_data[username]["weight_history"].append(new_weight)
+        user_data[username]["weight"] = new_weight
+        save_user_data(user_data)
+        st.success("Weight updated successfully!")
+
+    diet_choice = st.selectbox("Select your diet plan", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
+    if diet_choice:
+        user_data[username]['diet_plan'] = diet_plans[diet_choice]
+        save_user_data(user_data)
+        st.success(f"Your {diet_choice} diet plan has been saved!")
+
+    st.subheader("Your 7-Day Diet Plan:")
+    for day, meals in user_data[username]['diet_plan'].items():
+        st.markdown(f"{day}")
+        for meal_time, food in meals.items():
+            st.markdown(f"- *{meal_time}:* {food}")
+
+    st.subheader("Daily Meal Tracker")
+    breakfast = st.text_input("Enter your Breakfast")
+    lunch = st.text_input("Enter your Lunch")
+    dinner = st.text_input("Enter your Dinner")
+    if st.button("Save Meals"):
+        user_data[username]["last_meal"] = {
+            "Breakfast": breakfast,
+            "Lunch": lunch,
+            "Dinner": dinner
+        }
+        save_user_data(user_data)
+        st.success("Meals saved successfully!")
+
+    if user_data[username]["last_meal"] != {"Breakfast": "", "Lunch": "", "Dinner": ""}:
+        st.subheader("Your Last Saved Meal")
+        last = user_data[username]["last_meal"]
+        st.markdown(f"- *Breakfast:* {last['Breakfast']}")
+        st.markdown(f"- *Lunch:* {last['Lunch']}")
+        st.markdown(f"- *Dinner:* {last['Dinner']}")
+
     st.markdown("""
-    <hr>
-    <div style='text-align:center; color:gray;'>
-        <b>TechSpark Group:</b> Sakshi Ughade, Dipak Walunj, Divyank Wani, Omkar Zinjurde<br>
-        Amrutvahini College of Engineering, Sangamner - IT Department<br>
-        <span style='color:darkorange;'>© 2025 AI-Driven Personalized Nutrition Using IoT</span>
-    </div>
+        <hr>
+        <p style='color: teal; text-align: center;'>
+        Group Name: <strong>TechSpark</strong> | College: <strong>Amrutvahini College of Engineering, Sangamner</strong><br>
+        Branch: <strong>Computer Engineering</strong> | Team Members: <strong>Sakshi Ughade, Dipak Walunj, Divyank Wani, Omkar Zinjurde</strong>
+        </p>
     """, unsafe_allow_html=True)
 
-# Routing UI
-page = st.experimental_get_query_params().get("page", ["login"])[0]
-if page == "register":
-    show_register()
-elif not st.session_state.authenticated:
-    show_login()
+# Navigation Control
+if 'page' not in st.session_state:
+    st.session_state['page'] = 'login'
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
+
+if st.session_state['page'] == "register":
+    register_page()
+elif st.session_state['authenticated']:
+    main_app()
 else:
-    show_dashboard()
+    login_page()
