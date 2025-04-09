@@ -31,35 +31,35 @@ def calculate_bmr(weight, height, age, activity_level):
     }
     return bmr * activity_multiplier.get(activity_level, 1.2)
 
-# Example 200+ Indian food items categorized (Shortened for simplicity)
-unique_diet_items = {
-    "Weight Loss": [
-        "Upma with coconut chutney", "Poha", "Oats porridge", "Vegetable dalia", "Idli with chutney",
-        "Vegetable soup", "Multigrain roti with sabzi", "Green moong dal", "Sprouts salad",
-        "Fruit chaat", "Besan chilla", "Low-oil paneer bhurji", "Mixed vegetable curry",
-        "Khichdi", "Lauki sabzi", "Tinda curry", "Boiled moong dal salad", "Low-oil rajma",
-        "Missi roti", "Grilled paneer cubes", "Low-oil sambhar", "Vegetable upma", "Curd rice",
-        "Roti with bottle gourd curry", "Stuffed tinda paratha", "Low-fat curd", "Lemon coriander soup",
-        "Palak soup", "Beetroot poriyal", "Karela sabzi", "Baingan bharta"
-        # Add more unique meals per day later in loop
-    ],
-    "Balanced Nutrition": [
-        "Idli with sambar", "Rice with rajma", "Aloo-gobi sabzi", "Chapati with dal", "Paneer tikka",
-        "Vegetable pulao", "Chana masala", "Mixed fruit salad", "Stuffed paratha", "Vegetable thepla",
-        "Sprouted moong dal", "Cucumber raita", "Tomato curry", "Plain rice with kadhi", "Jeera aloo",
-        "Baingan sabzi", "Tamarind rice", "Masoor dal", "Cabbage poriyal", "Green beans sabzi",
-        "Cauliflower sabzi", "Corn chaat", "Vegetable semiya", "Mint paratha", "Sweet potato curry",
-        "Coconut rice", "Vegetable stew", "Chapati with methi sabzi", "Rajgira roti", "Pesarattu"
-    ],
-    "Muscle Gain": [
-        "Boiled eggs", "Paneer paratha", "Peanut butter toast", "Banana shake", "Grilled chicken breast",
-        "Moong dal cheela", "Mixed veg curry with paneer", "Soya chunks curry", "Lassi", "Dry fruits",
-        "Brown rice with chicken", "Scrambled paneer", "Vegetable khichdi with ghee", "Roti with egg curry",
-        "Chickpea salad", "Sweet corn with butter", "Ragi roti", "Paneer bhurji with toast", "Milk with almonds",
-        "Sprouts and paneer mix", "Rajma chawal", "Stuffed chicken rolls", "Palak paneer",
-        "Besan laddoo", "Masala oats with paneer", "Cheese paratha", "Vegetable biryani with curd",
-        "Roti with soyachunks curry", "Peanut ladoo", "Protein bar"
-    ]
+# Unique Indian 7-Day Diet Plans
+diet_plans = {
+    "Weight Loss": {
+        "Day 1": {"Breakfast": "Oats with skim milk", "Lunch": "Roti with lauki sabzi", "Dinner": "Vegetable soup and salad"},
+        "Day 2": {"Breakfast": "Poha with sprouts", "Lunch": "Brown rice with dal", "Dinner": "Grilled paneer with vegetables"},
+        "Day 3": {"Breakfast": "Ragi dosa", "Lunch": "Multigrain roti with chole", "Dinner": "Moong dal khichdi with curd"},
+        "Day 4": {"Breakfast": "Fruit smoothie", "Lunch": "Quinoa with vegetables", "Dinner": "Palak soup and salad"},
+        "Day 5": {"Breakfast": "Upma with peanuts", "Lunch": "Roti with mixed veg", "Dinner": "Vegetable stew with brown bread"},
+        "Day 6": {"Breakfast": "Idli with chutney", "Lunch": "Barley khichdi", "Dinner": "Grilled tofu and steamed veg"},
+        "Day 7": {"Breakfast": "Besan chilla", "Lunch": "Rice with sambhar", "Dinner": "Lentil soup with salad"},
+    },
+    "Balanced Nutrition": {
+        "Day 1": {"Breakfast": "Idli with sambar", "Lunch": "Rice with dal", "Dinner": "Vegetable pulao"},
+        "Day 2": {"Breakfast": "Chapati with bhaji", "Lunch": "Roti with paneer", "Dinner": "Mixed vegetable curry with rice"},
+        "Day 3": {"Breakfast": "Cornflakes with milk", "Lunch": "Khichdi with papad", "Dinner": "Chapati with bhindi"},
+        "Day 4": {"Breakfast": "Fruit salad and curd", "Lunch": "Veg pulao", "Dinner": "Dal and rice"},
+        "Day 5": {"Breakfast": "Upma with chutney", "Lunch": "Paratha with curd", "Dinner": "Stuffed capsicum with rice"},
+        "Day 6": {"Breakfast": "Multigrain toast", "Lunch": "Rajma with roti", "Dinner": "Vegetable noodles"},
+        "Day 7": {"Breakfast": "Vegetable sandwich", "Lunch": "Pulao with raita", "Dinner": "Chapati with mix veg"},
+    },
+    "Muscle Gain": {
+        "Day 1": {"Breakfast": "Boiled eggs with toast", "Lunch": "Chicken curry with rice", "Dinner": "Paneer with roti"},
+        "Day 2": {"Breakfast": "Protein smoothie", "Lunch": "Fish curry with rice", "Dinner": "Egg bhurji with paratha"},
+        "Day 3": {"Breakfast": "Sprouted moong salad", "Lunch": "Rajma rice", "Dinner": "Grilled chicken with vegetables"},
+        "Day 4": {"Breakfast": "Paneer sandwich", "Lunch": "Stuffed paratha with curd", "Dinner": "Chana masala with rice"},
+        "Day 5": {"Breakfast": "Oats with whey protein", "Lunch": "Mixed veg rice", "Dinner": "Soyabean curry with roti"},
+        "Day 6": {"Breakfast": "Boiled chana chaat", "Lunch": "Egg curry with rice", "Dinner": "Tofu stir fry with noodles"},
+        "Day 7": {"Breakfast": "Wheat flakes with milk", "Lunch": "Paneer tikka with roti", "Dinner": "Dal makhani with rice"},
+    }
 }
 
 # Register Page
@@ -165,6 +165,8 @@ def main_app():
 
     new_weight = st.number_input("Update Weight (kg)", min_value=10, max_value=300, value=weight)
     if st.button("Save Weight"):
+        if "weight_history" not in user_data[username]:
+            user_data[username]["weight_history"] = []
         user_data[username]["weight_history"].append(new_weight)
         user_data[username]["weight"] = new_weight
         save_user_data(user_data)
@@ -172,15 +174,7 @@ def main_app():
 
     diet_choice = st.selectbox("Select your diet plan", ["Weight Loss", "Balanced Nutrition", "Muscle Gain"])
     if diet_choice:
-        meals = {}
-        foods = unique_diet_items[diet_choice]
-        for i in range(7):
-            meals[f"Day {i+1}"] = {
-                "Breakfast": foods[(i*3) % len(foods)],
-                "Lunch": foods[(i*3 + 1) % len(foods)],
-                "Dinner": foods[(i*3 + 2) % len(foods)]
-            }
-        user_data[username]['diet_plan'] = meals
+        user_data[username]['diet_plan'] = diet_plans[diet_choice]
         save_user_data(user_data)
         st.success(f"Your {diet_choice} diet plan has been saved!")
 
@@ -206,13 +200,11 @@ def main_app():
     st.markdown("""
         <hr>
         <p style='color: teal; text-align: center;'>
-        Group Members: <strong>Sakshi Ughade, Dipak Walunj, Divyank Wani, Omkar Zinjurde</strong><br>
-        College: <strong>Amrutvahini College of Engineering, Sangamner</strong> | Branch: <strong> Artificial Intelligence and Data Science</strong>
+        Group Name: <strong>TechSpark</strong> | College: <strong>Amrutvahini College of Engineering, Sangamner</strong>
         </p>
     """, unsafe_allow_html=True)
 
 # Navigation
-
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'login'
