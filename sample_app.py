@@ -47,7 +47,7 @@ def generate_diet_plan():
         for meal_type in ["Breakfast", "Lunch", "Dinner"]:
             available = list(set(indian_foods[meal_type]) - used_meals[meal_type])
             if not available:
-                available = list(set(indian_foods[meal_type]))  # Reset if all used
+                available = list(set(indian_foods[meal_type]))
                 used_meals[meal_type] = set()
             meal = random.choice(available)
             used_meals[meal_type].add(meal)
@@ -99,7 +99,6 @@ elif st.session_state.logged_in and menu == "Dashboard":
     username = st.session_state.username
     st.subheader("Personalized Nutrition Info")
 
-    # Load previous info if exists
     user_info = user_data[username].get("info", {})
 
     age = st.number_input("Age", min_value=1, value=user_info.get("Age", 25))
@@ -187,4 +186,5 @@ if st.session_state.logged_in:
         <span style='color: #5cb85c;'>College: Amrutvahini College of Engineering, Sangamner</span><br>
         <span style='color: #f0ad4e;'>Branch: Artificial Intelligence and Data Science (AIDS)</span>
     </div>
+    <br><div style='text-align:center; font-size:12px;'>Thank you for using our AI Nutrition App 💚</div>
     """, unsafe_allow_html=True)
