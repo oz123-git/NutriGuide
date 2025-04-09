@@ -187,4 +187,8 @@ if st.session_state.logged_in:
         <span style='color: #f0ad4e;'>Branch: Artificial Intelligence and Data Science (AIDS)</span>
     </div>
     <br><div style='text-align:center; font-size:12px;'>Thank you for using our AI Nutrition App 💚</div>
+    <script>
+        const logo = window.parent.document.querySelector('img[alt="AI Nutrition App"]');
+        if (logo) logo.src = "image/nutrition_dashboard.jpg.webp";
+    </script>
     """, unsafe_allow_html=True)
