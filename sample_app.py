@@ -197,7 +197,7 @@ def main_app():
             "Lunch": lunch,
             "Dinner": dinner
         }
-        save_user_data(user_data)
+        save_user_data(user_data.json)
         st.success("Meals saved successfully!")
 
     if user_data[username]["last_meal"] != {"Breakfast": "", "Lunch": "", "Dinner": ""}:
