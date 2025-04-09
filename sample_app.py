@@ -200,10 +200,10 @@ def main_app():
     st.markdown("""
         <hr>
         <p style='color: teal; text-align: center;'>
-        Group Name: <strong>TechSpark</strong> | College: <strong>Amrutvahini College of Engineering, Sangamner</strong>
+        Group Name: <strong>TechSpark</strong> | College: <strong>Amrutvahini College of Engineering, Sangamner</strong><br>
+        Branch: <strong>Computer Engineering</strong> | Team Members: <strong>Sakshi Ughade, Dipak Walunj, Divyank Wani, Omkar Zinjurde</strong>
         </p>
     """, unsafe_allow_html=True)
-
 # Navigation
 def main():
     if 'page' not in st.session_state:
