@@ -194,7 +194,8 @@ def show_dashboard():
     <hr>
     <div style='text-align:center; color:gray;'>
         <b>TechSpark Group:</b> Sakshi Ughade, Dipak Walunj, Divyank Wani, Omkar Zinjurde<br>
-        Amrutvahini College of Engineering, Sangamner - IT Department
+        Amrutvahini College of Engineering, Sangamner - IT Department<br>
+        <span style='color:darkorange;'>© 2025 AI-Driven Personalized Nutrition Using IoT</span>
     </div>
     """, unsafe_allow_html=True)
 
