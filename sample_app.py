@@ -207,7 +207,7 @@ def main_app():
         <hr>
         <p style='color: teal; text-align: center;'>
         Group Members: <strong>Sakshi Ughade, Dipak Walunj, Divyank Wani, Omkar Zinjurde</strong><br>
-        College: <strong>Amrutvahini College of Engineering, Sangamner</strong> | Branch: <strong>Computer Engineering</strong>
+        College: <strong>Amrutvahini College of Engineering, Sangamner</strong> | Branch: <strong> Artificial Intelligence and Data Science</strong>
         </p>
     """, unsafe_allow_html=True)
 
