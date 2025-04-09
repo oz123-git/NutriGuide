@@ -47,7 +47,8 @@ def generate_diet_plan():
         for meal_type in ["Breakfast", "Lunch", "Dinner"]:
             available = list(set(indian_foods[meal_type]) - used_meals[meal_type])
             if not available:
-                available = indian_foods[meal_type]  # Reset if all used
+                available = list(set(indian_foods[meal_type]))  # Reset if all used
+                used_meals[meal_type] = set()
             meal = random.choice(available)
             used_meals[meal_type].add(meal)
             day_plan[meal_type] = meal
@@ -184,6 +185,6 @@ if st.session_state.logged_in:
     <div style='text-align: right;'>
         <span style='color: #5bc0de;'>Group: TechSpark</span><br>
         <span style='color: #5cb85c;'>College: Amrutvahini College of Engineering, Sangamner</span><br>
-        <span style='color: #f0ad4e;'>Branch: Computer Engineering</span>
+        <span style='color: #f0ad4e;'>Branch: Artificial Intelligence and Data Science (AIDS)</span>
     </div>
     """, unsafe_allow_html=True)
