@@ -31,7 +31,7 @@ def calculate_bmr(weight, height, age, activity_level):
     }
     return bmr * activity_multiplier.get(activity_level, 1.2)
 
-# Unique Indian 7-Day Diet Plans
+# Unique Indian 7-Day Diet Plans (no repeating food items)
 diet_plans = {
     "Weight Loss": {
         "Day 1": {"Breakfast": "Oats with skim milk", "Lunch": "Roti with lauki sabzi", "Dinner": "Vegetable soup and salad"},
@@ -63,6 +63,7 @@ diet_plans = {
 }
 
 # Register Page
+
 def register_page():
     st.image("nutrition_register.jpg.webp", use_container_width=True)
     st.markdown("<h1 style='color: #4CAF50;'>Create an Account</h1>", unsafe_allow_html=True)
@@ -99,6 +100,7 @@ def register_page():
             st.session_state['page'] = "login"
 
 # Login Page
+
 def login_page():
     st.image("nutrition_login.jpg.webp", use_container_width=True)
     st.markdown("<h1 style='color: #2196F3;'>AI Nutrition - Login</h1>", unsafe_allow_html=True)
@@ -120,6 +122,7 @@ def login_page():
         st.session_state['page'] = "register"
 
 # Main App After Login
+
 def main_app():
     st.image("nutrition_dashboard.jpg.webp", use_container_width=True)
     st.markdown("<h1 style='color: #FF5722;'>AI-Driven Personalized Nutrition</h1>", unsafe_allow_html=True)
@@ -197,6 +200,13 @@ def main_app():
         save_user_data(user_data)
         st.success("Meals saved successfully!")
 
+    if user_data[username]["last_meal"] != {"Breakfast": "", "Lunch": "", "Dinner": ""}:
+        st.subheader("Your Last Saved Meal")
+        last = user_data[username]["last_meal"]
+        st.markdown(f"- **Breakfast:** {last['Breakfast']}")
+        st.markdown(f"- **Lunch:** {last['Lunch']}")
+        st.markdown(f"- **Dinner:** {last['Dinner']}")
+
     st.markdown("""
         <hr>
         <p style='color: teal; text-align: center;'>
@@ -204,7 +214,9 @@ def main_app():
         Branch: <strong>Computer Engineering</strong> | Team Members: <strong>Sakshi Ughade, Dipak Walunj, Divyank Wani, Omkar Zinjurde</strong>
         </p>
     """, unsafe_allow_html=True)
+
 # Navigation
+
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'login'
