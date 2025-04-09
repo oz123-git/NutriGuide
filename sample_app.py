@@ -125,7 +125,7 @@ elif st.session_state.logged_in and menu == "Dashboard":
         st.success("Health data saved successfully.")
 
     st.subheader("Your Current Info")
-    st.write(user_data[username]["info"])
+    st.write(user_data[username].get("info", "No health information saved yet."))
 
 # Meal Tracker Page
 elif st.session_state.logged_in and menu == "Daily Meal Tracker":
