@@ -175,7 +175,8 @@ elif st.session_state.logged_in and menu == "Diet Plan":
         user_data[username]["diet_plan"] = generate_diet_plan()
         save_user_data()
         st.success("Diet plan regenerated!")
-        st.experimental_rerun()
+        st.rerun()
+
 
 # Footer
 if st.session_state.logged_in:
