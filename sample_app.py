@@ -4,6 +4,7 @@ import streamlit as st
 import json
 import os
 from datetime import datetime
+import random
 
 # File paths
 image_path = os.getcwd()
@@ -78,71 +79,56 @@ def show_register():
             save_user_data(user_db)
             st.success("Account created! Please log in.")
 
-# Diet Plan Generator
+# Diet Plan Generator with unique meals
+
 def get_diet_plan(goal, diet_type):
-    plan = {
+    plan_bank = {
         "Weight Loss": {
             "Vegetarian": [
-                ("Oats with fruits", "Roti with sabzi", "Moong dal khichdi"),
-                ("Poha", "Brown rice with dal", "Vegetable soup with toast"),
-                ("Upma", "Roti with paneer bhurji", "Mixed veg curry with rice"),
-                ("Idli with chutney", "Lentil salad with buttermilk", "Veg pulao"),
-                ("Fruit smoothie", "Vegetable khichdi", "Dalia with veggies"),
-                ("Cornflakes with milk", "Stuffed paratha (low-oil)", "Tofu curry with roti"),
-                ("Besan chilla", "Veg sandwich", "Spinach soup with toast")
+                "Oats with fruits", "Roti with sabzi", "Moong dal khichdi", "Poha", "Brown rice with dal", "Vegetable soup with toast",
+                "Upma", "Paneer bhurji", "Mixed veg curry", "Idli with chutney", "Lentil salad", "Veg pulao", "Fruit smoothie",
+                "Vegetable khichdi", "Dalia with veggies", "Cornflakes with milk", "Stuffed paratha", "Tofu curry with roti",
+                "Besan chilla", "Veg sandwich", "Spinach soup with toast"
             ],
             "Non-Vegetarian": [
-                ("Boiled eggs with toast", "Grilled chicken salad", "Fish curry with brown rice"),
-                ("Oats with milk", "Egg curry with rice", "Chicken soup"),
-                ("Vegetable omelette", "Grilled chicken wrap", "Fish tikka"),
-                ("Idli with sambhar", "Tuna salad", "Egg bhurji with roti"),
-                ("Smoothie with nuts", "Chicken rice bowl", "Grilled fish with veggies"),
-                ("Poha with sprouts", "Egg fried rice (low oil)", "Boiled chicken with veggies"),
-                ("Multigrain toast", "Chicken curry with roti", "Tandoori fish")
+                "Boiled eggs with toast", "Grilled chicken salad", "Fish curry with brown rice", "Egg curry with rice", "Chicken soup",
+                "Vegetable omelette", "Grilled chicken wrap", "Fish tikka", "Tuna salad", "Egg bhurji with roti", "Smoothie with nuts",
+                "Chicken rice bowl", "Grilled fish with veggies", "Egg fried rice", "Boiled chicken with veggies", "Multigrain toast",
+                "Chicken curry with roti", "Tandoori fish", "Egg curry + oats", "Chicken tikka + salad", "Tuna sandwich"
             ]
         },
         "Balanced Nutrition": {
             "Vegetarian": [
-                ("Milk + paratha", "Dal chawal + salad", "Veg curry + roti"),
-                ("Upma + milk", "Chole with rice", "Paneer sabzi + roti"),
-                ("Smoothie + toast", "Rajma with brown rice", "Dalia with curd"),
-                ("Idli + sambhar", "Veg paratha + curd", "Kadhi + rice"),
-                ("Cornflakes + fruit", "Lauki sabzi + roti", "Khichdi with ghee"),
-                ("Poha + sprouts", "Palak dal + rice", "Paneer tikka with salad"),
-                ("Multigrain sandwich", "Veg pulao + raita", "Mix veg with chapati")
+                "Milk + paratha", "Dal chawal + salad", "Veg curry + roti", "Upma + milk", "Chole with rice", "Paneer sabzi + roti",
+                "Smoothie + toast", "Rajma with brown rice", "Dalia with curd", "Idli + sambhar", "Veg paratha + curd", "Kadhi + rice",
+                "Cornflakes + fruit", "Lauki sabzi + roti", "Khichdi with ghee", "Poha + sprouts", "Palak dal + rice", "Paneer tikka with salad",
+                "Multigrain sandwich", "Veg pulao + raita", "Mix veg with chapati"
             ],
             "Non-Vegetarian": [
-                ("Boiled eggs + bread", "Chicken curry + rice", "Fish curry + roti"),
-                ("Oats + fruits", "Egg bhurji + paratha", "Chicken rice"),
-                ("Toast + smoothie", "Grilled fish + salad", "Egg curry + rice"),
-                ("Poha + milk", "Chicken wrap", "Grilled chicken with chapati"),
-                ("Upma + juice", "Tuna salad", "Boiled eggs + veg soup"),
-                ("Idli + chutney", "Fish biryani", "Chicken tikka"),
-                ("Fruit + toast", "Boiled eggs + roti", "Chicken stew + rice")
+                "Boiled eggs + bread", "Chicken curry + rice", "Fish curry + roti", "Oats + fruits", "Egg bhurji + paratha", "Chicken rice",
+                "Toast + smoothie", "Grilled fish + salad", "Egg curry + rice", "Poha + milk", "Chicken wrap", "Grilled chicken with chapati",
+                "Upma + juice", "Tuna salad", "Boiled eggs + veg soup", "Idli + chutney", "Fish biryani", "Chicken tikka",
+                "Fruit + toast", "Boiled eggs + roti", "Chicken stew + rice"
             ]
         },
         "Muscle Gain": {
             "Vegetarian": [
-                ("Paneer paratha + milk", "Dal rice + paneer", "Chole with roti"),
-                ("Oats with peanut butter", "Rajma + rice", "Tofu bhurji with bread"),
-                ("Banana shake + roti", "Soya chunks + pulao", "Veg biryani"),
-                ("Dalia + dry fruits", "Khichdi + curd", "Paneer butter masala + roti"),
-                ("Boiled chana + poha", "Mixed dal + roti", "Palak paneer + rice"),
-                ("Fruit + oats", "Chole bhature", "Stuffed paratha + curd"),
-                ("Multigrain toast + milk", "Paneer tikka", "Matar paneer + roti")
+                "Paneer paratha + milk", "Dal rice + paneer", "Chole with roti", "Oats with peanut butter", "Rajma + rice", "Tofu bhurji with bread",
+                "Banana shake + roti", "Soya chunks + pulao", "Veg biryani", "Dalia + dry fruits", "Khichdi + curd", "Paneer butter masala + roti",
+                "Boiled chana + poha", "Mixed dal + roti", "Palak paneer + rice", "Fruit + oats", "Chole bhature", "Stuffed paratha + curd",
+                "Multigrain toast + milk", "Paneer tikka", "Matar paneer + roti"
             ],
             "Non-Vegetarian": [
-                ("Eggs + toast", "Chicken curry + rice", "Fish + veggies"),
-                ("Smoothie + boiled eggs", "Grilled chicken + roti", "Fish pulao"),
-                ("Oats + omelet", "Boiled chicken + rice", "Egg curry + chapati"),
-                ("Idli + sambhar", "Chicken wrap", "Grilled fish + curd"),
-                ("Paratha + eggs", "Tandoori chicken", "Fish tikka + salad"),
-                ("Cornflakes + milk", "Chicken biryani", "Boiled eggs + soup"),
-                ("Fruit + toast", "Egg roll", "Chicken stew")
+                "Eggs + toast", "Chicken curry + rice", "Fish + veggies", "Smoothie + boiled eggs", "Grilled chicken + roti", "Fish pulao",
+                "Oats + omelet", "Boiled chicken + rice", "Egg curry + chapati", "Idli + sambhar", "Chicken wrap", "Grilled fish + curd",
+                "Paratha + eggs", "Tandoori chicken", "Fish tikka + salad", "Cornflakes + milk", "Chicken biryani", "Boiled eggs + soup",
+                "Fruit + toast", "Egg roll", "Chicken stew"
             ]
         }
     }
-    return plan.get(goal, {}).get(diet_type, [])
+
+    meals = random.sample(plan_bank[goal][diet_type], 21)
+    return [(meals[i], meals[i+1], meals[i+2]) for i in range(0, 21, 3)]
 
 # Main App (after login)
 def show_dashboard():
